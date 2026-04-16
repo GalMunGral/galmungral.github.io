@@ -1,56 +1,251 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Research Software Engineering: A Philosophical Investigation</title>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Research Software Engineering: A Philosophical Investigation</title>
+  </head>
+  <body>
+    <h1>Research Software Engineering: A Philosophical Investigation</h1>
 
-<h1>Research Software Engineering: A Philosophical Investigation</h1>
+    <p>
+      All human activities are embedded in social relations: Whenever we swallow
+      a morsel of food, we enter into a web of relations with others, such as
+      the farmers who grew it and the workers who processed and transported it —
+      most of them are strangers we might never meet. Whenever we put a foot on
+      the pedal, we also enter into a web of relations with strangers: the
+      mechanical engineers who designed the vehicle, the civil engineers who
+      built the roads beneath it, the urban planners who laid out the city,
+      among others. These relations, though impersonal, are the foundations of
+      civilization.
+    </p>
 
-<p>All human activities are embedded in social relations: Whenever we swallow a morsel of food, we enter into a web of relations with others, such as the farmers who grew it and the workers who processed and transported it — most of them are strangers we might never meet. Whenever we put a foot on the pedal, we also enter into a web of relations with strangers: the mechanical engineers who designed the vehicle, the civil engineers who built the roads beneath it, the urban planners who laid out the city, among others. These relations, though impersonal, are the foundations of civilization.</p>
+    <p>
+      As activities are embedded, context is everything. For instance, one can
+      sing on stage, demonstrate to a student, or sing in the shower — and even
+      when these involve the same technical execution, they are obviously
+      different activities, each serving a different kind of social relation:
+      with an audience, a student, and oneself (if we include this relation with
+      oneself in our definition of "social relations"). Each relation carries
+      its own superstructure of purpose, intent, norms, and value judgements,
+      shaping how we are expected to act, and consequently how we think and feel
+      about what we are doing. Software engineering is no exception. What we do
+      with software does not, on its own, define what we are doing. And yet our
+      received language draws no distinction between the <i>action</i> in
+      isolation and the <i>activity</i> which is socially grounded. It is
+      precisely this omission that motivates the following discussion, which
+      seeks to unpack what the term "research software engineering" fails to
+      capture.
+    </p>
 
-<p>As activities are embedded, context is everything. For instance, one can sing on stage, demonstrate to a student, or sing in the shower — and even when these are carried out by the same person with the exact same techniques, they are obviously different activities, each serving a different kind of social relation: with an audience, a student, and oneself (if we include this relation with oneself in our definition of "social relations"). Software engineering is not unlike singing in this regard: what we do with software does not, on its own, define what we are doing. When the language we inherit draws no distinction between activities that share the same action but serve entirely different social relations, we risk treating them as the same — and it is precisely this confusion we must seek to untangle, before we can accurately define what our profession is and what it demands of us.</p>
+    <p>
+      The computer is, in Aristotle's terms, a first potentiality: a machine
+      that could become any mechanism we prescribe, whose significance lies
+      entirely in what it <i>could become</i>. A program is simultaneously a
+      first actuality — the realization of the computer's potential of becoming
+      a specialized mechanism — and simultaneously a second potentiality, as it
+      holds within it only the <i>capacity</i> to transform inputs into outputs
+      without yet having exercised it. A running process is the second actuality
+      — the realization of the program's potential to actually transform inputs
+      into outputs in the world.
+    </p>
 
-<h2>A Classification of Software</h2>
+    <p>
+      Software mainly serves two kinds of purpose:
+      <i>instrumental</i> and <i>rhetorical</i>, corresponding respectively to
+      the social relations of producer and consumer, and that of author and
+      audience.
+    </p>
 
-<p>The computer is, in Aristotle's terms, a first potentiality: a machine that could become any mechanism we prescribe, whose significance lies entirely in what it could become. A program is simultaneously a first actuality and a second potentiality: actual in that it exists as a readable, shareable, evaluable text, yet potential in that it holds within it only the capacity to transform inputs into outputs without yet having exercised it. A running process is the second actuality: the program fully at work, its capacity no longer merely held but exercised, actively transforming inputs into outputs in the world. The philosophically interesting thing about a program is precisely the dual nature of that middle term — it exists, it can be read and evaluated and demonstrated, and yet it has not fulfilled its telos — and it is this tension that gives rise to the distinctions we need.</p>
+    <p>
+      We normally think of software as instrumental, its utility lying entirely
+      in the output it produces from the inputs. The criteria are familiar: for
+      simulations, correctness and reproducibility; for user-facing services,
+      reliability, availability, performance, and security. But software is also
+      an expressive medium, and thus has the capacity not only to transform data
+      but to transmit ideas, as Engelbart and Kay argued.
+    </p>
 
-<p>From this structure we can identify two fundamentally different raisons d'être for software: <i>rhetorical</i> and <i>instrumental</i>. This classification is not intrinsic to the software but derives from the social relations it partakes in.</p>
+    <p>
+      It is useful, however, to make a further distinction between media and
+      rhetoric. Rhetorical software is created to establish or support an
+      argument. Sometimes the output is the argument — a visualization makes a
+      claim about data, a simulation produces results that validate a theory.
+      But sometimes the running itself is the argument: a prototype that
+      executes convinces the observer, in a way no description could, that the
+      proposed system is technically feasible, and that the underlying idea has
+      practical merit. In both cases the sole criterion is the effectiveness of
+      the argument. Other metrics such as reliability and performance matter
+      only insofar as they contribute to the effectiveness of the argument. A
+      demonstration that crashes before making its point has failed; one that
+      makes its point and subsequently crashes has, for all practical purposes,
+      succeeded.
+    </p>
 
-<p><i>Rhetorical software</i> enacts the social relation of author and audience. It necessarily achieves second actuality — the code must be run — but that second actuality is not in service of a need but of a proposition: the running either makes the claim directly — as in a visualization, where the output is the argument — or produces evidence in support of one, as when simulation results are included in a paper and the code as supplementary material. The raison d'être is rhetorical. Success means the argument is clear, the claim is convincing, the demonstration illuminates what it sets out to illuminate. Reliability and performance matter only insofar as they serve that purpose. A demonstration that fails before making its point has failed; one that makes its point and subsequently fails has succeeded.</p>
+    <p>
+      Not all media is rhetorical. A video game made purely for entertainment is
+      instrumental — the efficient computation of the next frame of pixels from
+      the user's controller input is the whole point. But a game can also convey
+      an intentional message (e.g. MGS2), which makes it simultaneously a
+      rhetorical device. Our relation with its creators is therefore
+      simultaneously a producer-consumer and an author-audience relation. In
+      this sense, research software is not unlike a video game: it can function
+      both as an instrument that supports research and as a rhetorical device in
+      the service of publications, conference presentations, grant proposals,
+      and other forms of scholarly persuasion.
+    </p>
 
-<p><i>Instrumental software</i> enacts the social relation of producer and consumer. Second actuality is pursued to the fullest extent — the running process and the outputs it produces are what someone needs. Nobody cares that the program exists as a first actuality and second potentiality — apart from the software engineers, that is. The software stands or falls by the quality, reliability, and availability of what it produces. The raison d'être is productive. Success means correct and reliable output delivered. The obligations that follow are correspondingly stronger. In contrast to rhetorical software, which operates at the level of ideas — where the consequences of failure are epistemic, a flawed argument or a misleading claim — instrumental software operates in the world, where the consequences of failure are immediate and material, with real effects on real lives. For simulations, correctness and reproducibility are paramount — others will build on the results, and errors propagate. For products, the bar is higher still: correctness, reliability, availability, performance, security, and maintainability all matter, because real people whose everyday lives are shaped to some extent by what is built are depending on what the software produces.</p>
+    <p>
+      We could also analyze social relations by the human needs that power them.
+      Some needs can be fulfilled temporarily, but no act of fulfillment
+      extinguishes them, as they are conditions of our being: the need to eat,
+      to sleep, to be entertained, to name but a few. Society gives rise to many
+      more such needs beyond the merely biological — the need to carry out our
+      duties, for instance, is never dissolved by carrying them out (or so we
+      hope). Other needs are contingent: the very act of fulfilling them
+      extinguishes them. The need to have a wedding, for example, is satisfied
+      by simply having the wedding. Some software serves such contingent needs —
+      a data processing script that cleans one particular dataset, a simulation
+      run for a single research project — and once the need is filled, the
+      relation dissolves. We call software that serves contingent needs
+      <i>ephemeral</i>, and software that serves recurrent needs
+      <i>persistent</i>.
+    </p>
 
-<p>There is another dimension along which we can analyze the social relations software serves — the structure of the human need that underlies them. Some needs are <i>recurrent</i>: they can be fulfilled temporarily but never permanently, because they are conditions of our being. The need to eat, to sleep, to be entertained — these return inevitably, no act of fulfillment extinguishes them. Society gives rise to many more such persistent needs, on top of those of maintaining bodily functions — and this manifests in the need to play our role in society and carry out our job duties, which are not dissolved by doing so but return with each new day. The software industry is persistent by precisely these persistent needs — they are its economic foundation, enduring as long as society itself endures, and enabling business models like subscriptions and advertising that depend on the relation never being permanently dissolved. Other needs are <i>contingent</i>: the very act of fulfilling them dissolves them. The need to have a wedding is satisfied by having the wedding — it is not a condition of being, and one will not have more than a handful in a lifetime. Some software serves such contingent needs: a data processing script that cleans one particular dataset, a simulation run for a single research project — once the need is fulfilled, the relation dissolves — both the relation between the person and the software and the social relation that underlies it. We call software that serves contingent needs <i>ephemeral</i>, and software that serves persistent needs <i>persistent</i>.</p>
+    <p>Combining these two dimensions gives us four kinds of software:</p>
 
-<p>Combining these two dimensions gives us four kinds of software:</p>
+    <ul>
+      <li>
+        <i>Ephemeral-rhetorical</i>: e.g. one-off scripts and programs written
+        to produce figures, renderings, interface screenshots, paper
+        supplements.
+      </li>
+      <li>
+        <i>Ephemeral-instrumental</i>: e.g. migration scripts, data cleaning
+        scripts, analysis pipelines, simulation runs.
+      </li>
+      <li>
+        <i>Persistent-rhetorical</i>: e.g. research websites, teaching tools,
+        live demos, interactive visualizations, proof-of-concept systems.
+      </li>
 
-<ul>
-  <li><i>Ephemeral rhetorical</i>: e.g. visualizations (figures, videos), paper supplements.</li>
-  <li><i>Ephemeral instrumental</i>: e.g. data cleaning scripts, simulation runs, analysis pipelines.</li>
-  <li><i>Persistent rhetorical</i>: e.g. interactive visualizations, proof-of-concept systems.</li>
-  <li><i>Persistent instrumental</i>: e.g. platforms, systems, tools, and pipelines in production.</li>
-</ul>
+      <li>
+        <i>Persistent-instrumental</i>: e.g. shared libraries, data pipelines,
+        user-facing platforms, cyberinfrastructure.
+      </li>
+    </ul>
 
-<p>It is worth pointing out that these categories are social constructs, not a metaphysical taxonomy — dictated by social relations rather than intrinsic properties, and as such they are fluid, shifting throughout the lifetime of the software as those relations shift — just as our own professional and personal identities are not fixed but constituted by the social relations we navigate, which themselves shift as our careers progress and our relations with others change. The same software can serve different social relations at different times — just as a singer can perform the same song on stage, at a rally, or in a lesson, each time in service of a different social relation. What is more, software can hold multiple classifications at the same moment — just as a person can hold multiple social relations simultaneously, each with its own obligations. A simulation run during the course of research, its outputs feeding into ongoing analysis, is ephemeral instrumental; the same simulation, used incidentally to generate figures for a paper, is simultaneously ephemeral rhetorical. A proof-of-concept system is persistent rhetorical, but as people come to depend on it and incorporate it into their workflows, it becomes simultaneously persistent instrumental. A ephemeral instrumental can also be embedded within a persistent instrumental — when its functionality is packaged and provided as a service that runs per user request, the ephemeral instrumental computations become part of a larger persistent instrumental system.</p>
+    <p>
+      These categories are by no means a fixed taxonomy. As social relations
+      shift over time, so too do the categories we might assign to a piece of
+      software — and moreover, multiple categories can apply at the same time. A
+      simulation run in the course of research is ephemeral-instrumental; the
+      same simulation, used to generate figures for a paper, is also
+      ephemeral-rhetorical. A proof-of-concept system is persistent-rhetorical,
+      but if people start to incorporate it into their workflows, it becomes,
+      simultaneously, persistent-instrumental. We could even package an
+      ephemeral-instrumental as a persistent-instrumental service that runs it
+      on demand, or combine ephemeral-instrumental and ephemeral-rhetorical
+      components into a persistent-rhetorical system.
+    </p>
 
-<h2>The Language Problem</h2>
+    <p>
+      Having laid out this framework, we can now ask more precisely: what
+      exactly distinguishes "research software engineering" from just "software
+      engineering"? Is it merely software engineering in a research context —
+      and if so, what does that really mean? To answer that, we must first
+      understand the <i>language game (Sprachspiel)</i>, in Wittgenstein's
+      terms, that our language about software belongs to.
+    </p>
 
-<p>Given this framework, we can now return to the question: what exactly distinguishes "research software engineering" from the unqualified "software engineering"? What does "research" really mean here, beyond its obvious literal sense? It is undeniable that the academic setting is a distinctive characteristic of our work — but it does not quite capture the essential challenges.</p>
+    <p>
+      The software industry is, as a whole, mainly concerned with what we have
+      categorized as persistent-instrumental software — and for good reason: the
+      economic model is sustained by, and actively incentivizes, the cultivation
+      of stable, long-term relations between producers and consumers (not always
+      mutually beneficial, as the case of social media illustrates). This
+      economic <i>base (Basis)</i> in turn dictates the
+      <i>superstructure (Überbau)</i>, in Marx's terms, of practices, language,
+      and ideology: "reliability", "security", "availability",
+      "maintainability", "user experience", "growth", "engagement", and so on.
+      We have internalized this set of values so thoroughly that we take them to
+      be universal — and that is precisely what is insidious about ideology.
+      These familiar words and values did not arise from nowhere, nor do they
+      reflect universal necessity: they are rooted in a capitalist mode of
+      production, and in part serve to perpetuate it. Academia, though still
+      deeply entangled with it, does not operate by the same logic.
+    </p>
 
-<p>Just as understanding a word requires tracing its origins — the language game, in Wittgenstein's terms, that it was part of, the social relations that gave it meaning — understanding our profession requires understanding the software industry: the language game whose vocabulary we have inherited, and without which it loses all meaning. As we pointed out earlier, the software industry is mainly concerned with persistent instrumental software — and for good reason: the economic model is persistent by, and in turn actively incentivizes, the cultivation of stable, long-term relations between producers and consumers. This in turn dictates the entire superstructure of practices and values, from technical imperatives such as reliability, security, availability, and maintainability, to market imperatives such as user friendliness, growth, and engagement.</p>
+    <p>
+      Unlike in industry, where the relation is largely fixed and enduring, we
+      work across a disparate collection of short-term projects and grant
+      cycles, spanning the full spectrum of relations, and they shift silently
+      during the course of a project. Consider, for example, a one-off data
+      pipeline that becomes the core dependency of a prototype, which in turn
+      becomes a "production system" (or so it is called), temporarily extended
+      for demo videos. Nothing in this sequence, in fact, ever crosses the
+      boundary of rhetorical software into the category of instrumental.
+      "Production", "release", and the like are really misnomers carried over
+      from the language game of industry. If we focus narrowly on the task at
+      hand without situating it in its social context, both the silent shift in
+      the nature of the activity and the misappropriation of language go
+      unnoticed. Our language, which appears far more innocuous than it really
+      is, affords us no ability whatsoever to discern such nuances and
+      subtleties, and so we are left perplexed when we inevitably find ourselves
+      frustrated and burnt out by the misaligned expectations, wasted effort,
+      endless back-and-forth, and people talking past each other, each playing
+      their own language game that just happens to share a vocabulary that looks
+      and sounds the same.
+    </p>
 
-<p>The funding model of academic research, by contrast, incentivizes outputs: prototypes, publications, results. It neither acknowledges nor directly incentivizes the cultivation of the requisite social relations, so it falls upon us to identify and maintain them in an appropriate manner, in the absence of any monetary incentive as a natural guidance, or sometimes even in the face of incentives that do the exact opposite. What is more, even when such relations do form and persist, they are rarely of the same kind as the industry's producer-consumer relation, and yet we inherit the industry's vocabulary and values as if they were. We work across the full range of relations that shift constantly, sometimes across projects, often within a single one. A ephemeral becomes a dependency, a proof-of-concept becomes infrastructure, and while we are fixated on the output, this silent shift in the nature of the activity goes undetected. To make things worse, the natural language we so rarely question does not offer us the ability to discern such nuances and subtleties, and when that shift goes unrecognized the consequences are real: misaligned expectations, wasted effort, frustration, burnout, people arguing past each other, each applying criteria that are perfectly reasonable in the social relation they imagine themselves to be in, and neither quite understanding why the other seems unreasonable.</p>
+    <p>
+      Let us zoom in to where the language fails us. Take the word "user" in the
+      context of rhetorical software whose aim is to convince a reviewer. Who
+      exactly is the "user", and what relation do we have with them? The
+      so-called "user", if you search outside of language, is nowhere to be
+      found — a phantom, like Russell's bald king of France, that despite being
+      a valid linguistic construct has no real referent in the world. It simply
+      has no meaning. Surely the reviewer <i>uses</i> the software, and is
+      therefore, obviously, <i>by definition</i>, a user? But remember: the same
+      action does not constitute the same activity — singing in the shower does
+      not, in fact, make you a singer in any real sense of the word. A reviewer
+      might temporarily occupy the role of a "user" as a narrative device, much
+      as an actor plays a part, and when the evaluation is complete, the
+      performance ends and they return to their ordinary lives. To characterize
+      such a person as a "user" is a category error — no less naive than
+      believing that Santa Claus is real.
+    </p>
 
-<p>The word that sits at the very center of this tension is "user". To see where the problem lies, let us take rhetorical software as a case study. Who exactly is the "user" here, and what relation do we have with them? Upon examination, it becomes apparent that the so-called "user" has no existence outside of the linguistic realm — it is a kind of abstraction, a placeholder role that may not correspond to any actual person in the relevant social sense. Surely <i>someone</i> uses the software, one might reasonably object — a reviewer, perhaps, who runs the code to evaluate the claim. But as we have seen, the performance of the same action does not constitute the same activity, which is grounded in the social relation it serves. A reviewer might temporarily occupy the role, much as an actor inhabits a part in a play, and when the evaluation is complete, the performance ends and they return to their ordinary lives — the role does not persist beyond the context that gave rise to it. To characterize such a person as a "user" is a category error.</p>
+    <p>
+      This is where the linguistic problem becomes especially consequential. In
+      some languages there is no lexical distinction between blue and green, and
+      speakers of those languages do not make the same perceptual distinctions
+      that speakers of other languages do. Similarly, when our vocabulary offers
+      no built-in distinction between a linguistic reality and an ontological
+      one, we risk organizing our practices around a parasocial relation with a
+      figment of imagination.
+    </p>
 
-<p>This is where the linguistic problem becomes especially consequential. In some languages there is no lexical distinction between blue and green, and speakers of those languages do not make the same perceptual distinctions that speakers of other languages do. Similarly, when our vocabulary offers no built-in distinction between a linguistic reality and an ontological one, we risk organizing our practices around a parasocial relation with a figment of imagination.</p>
+    <p>
+      In some languages there is no distinction between blue and green — and
+      speakers of those languages do not make the same perceptual distinctions
+      that speakers of other languages do. This is precisely our predicament:
+      the distinctions we need to clearly delineate our profession simply do not
+      exist in the vocabulary we have inherited from the software industry. The
+      foremost challenge of our profession is therefore not the mechanical
+      execution of designing, coding, testing, and deploying software, nor the
+      unexamined pursuit of virtues such as "security", "maintainability",
+      "correctness", "user experience" — virtues that are real and important
+      within the language game of the underlying economy, but whose relevance is
+      always relative to the actual social relations the software serves. To
+      properly invest our limited time and effort, we must develop the
+      diagnostic capacity to ask, before anything else: what relation does this
+      software serve, and what does that relation demand of us? In a profession
+      as young and as uncharted as ours, no one will hand us the answers, and so
+      we must articulate them ourselves. And to articulate them, we must first
+      invent the language, because, at the end of the day, as Wittgenstein said,
+    </p>
 
-<p>The central challenge of our profession is therefore not the mechanical execution of designing, coding, testing, and deploying software, nor the unexamined pursuit of virtues such as security, maintainability, correctness, or user friendliness — virtues that are real and important, but whose relevance is always relative to the social relations the software serves. To properly invest our limited time and effort, we must develop the diagnostic capacity to ask, before anything else: what relation does this software serve, and what does that relation demand of us? In a profession as young and as undefined as ours, no one will hand us answers to those questions — we must articulate them ourselves. And to articulate them, we must first invent the language. As Wittgenstein said,</p>
-
-<blockquote><i>Die Grenzen meiner Sprache bedeuten die Grenzen meiner Welt.</i></blockquote>
-
-</body>
+    <i>Die Grenzen meiner Sprache bedeuten die Grenzen meiner Welt.</i>
+  </body>
 </html>
