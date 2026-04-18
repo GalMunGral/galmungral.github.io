@@ -27,52 +27,45 @@
       could, that the proposed system is technically feasible, and that the
       underlying idea has practical merit. In both cases the primary criterion
       is the effectiveness of the argument &mdash; reliability, performance,
-      etc. matter only insofar as they contribute to it.
-    </p>
-
-    <p>
-      We could further divide each category into <i>ephemeral</i> and
-      <i>persistent</i>, based on whether the need it serves is recurrent or
-      one-time. This gives us four kinds of software:
+      etc. matter only insofar as they contribute to it. We could further divide
+      each category into <i>ephemeral</i> and <i>persistent</i>, based on
+      whether the need it serves is recurrent or one-time, giving us four kinds
+      of software:
     </p>
 
     <table style="border-collapse: collapse">
       <tbody>
         <tr>
-          <td style="border: 1px solid; padding: 0.25rem 0.5rem"></td>
-          <td style="border: 1px solid; padding: 0.25rem 0.5rem">
+          <td style="border: 1px solid; padding: 0.4rem 0.6rem"></td>
+          <td style="border: 1px solid; padding: 0.4rem 0.6rem">
             <i>Rhetorical</i>
           </td>
-          <td style="border: 1px solid; padding: 0.25rem 0.5rem">
+          <td style="border: 1px solid; padding: 0.4rem 0.6rem">
             <i>Instrumental</i>
           </td>
         </tr>
-      </tbody>
-
-      <tbody>
         <tr>
-          <td style="border: 1px solid; padding: 0.25rem 0.5rem">
+          <td style="border: 1px solid; padding: 0.4rem 0.6rem">
             <i>Ephemeral</i>
           </td>
-          <td style="border: 1px solid; padding: 0.25rem 0.5rem">
-            e.g. one-off scripts to produce figures, renderings, paper
-            supplements
+          <td style="border: 1px solid; padding: 0.4rem 0.6rem">
+            one-off scripts to produce figures, renderings, paper supplements
           </td>
-          <td style="border: 1px solid; padding: 0.25rem 0.5rem">
-            e.g. migration scripts, data cleaning scripts, analysis pipelines,
+          <td style="border: 1px solid; padding: 0.4rem 0.6rem">
+            migration scripts, data cleaning scripts, analysis pipelines,
             simulation runs, reproducible research
           </td>
         </tr>
         <tr>
-          <td style="border: 1px solid; padding: 0.25rem 0.5rem">
+          <td style="border: 1px solid; padding: 0.4rem 0.6rem">
             <i>Persistent</i>
           </td>
-          <td style="border: 1px solid; padding: 0.25rem 0.5rem">
-            e.g. research websites, teaching tools, live demos, interactive
+          <td style="border: 1px solid; padding: 0.4rem 0.6rem">
+            research websites, teaching tools, live demos, interactive
             visualizations, proof-of-concept systems
           </td>
-          <td style="border: 1px solid; padding: 0.25rem 0.5rem">
-            e.g. shared libraries, data pipelines, user-facing platforms,
+          <td style="border: 1px solid; padding: 0.4rem 0.6rem">
+            shared libraries, data pipelines, user-facing platforms,
             cyberinfrastructure
           </td>
         </tr>
@@ -80,59 +73,49 @@
     </table>
 
     <p>
-      Research software can fall into any of these categories. Many of us
-      dedicate efforts to rhetorical software: prototypes, demos,
-      visualizations, and the like. But the funding models for research &mdash;
-      short-term projects, grant cycles, papers &mdash; tend to favor the
-      rhetorical and neglect the instrumental, even when the latter is what
-      sustains the work in the long run.
-    </p>
-
-    <p>
       It is perhaps most helpful to think of this as an epistemological rather
       than ontological framework &mdash; it describes how we can think of
       software, not what software is in itself. As social relations shift over
-      time, so too do the categories we might assign to a piece of software
-      &mdash; and moreover, multiple categories can apply at the same time. A
-      simulation run in the course of research is ephemeral-instrumental; the
-      same simulation, used to generate figures for a paper, is also
-      ephemeral-rhetorical. A proof-of-concept system is persistent-rhetorical,
-      but if people start to incorporate it into their workflows, it becomes,
-      simultaneously, persistent-instrumental, and there are many more possible
-      combinations.
+      time, so too do the categories we might assign to a piece of software; and
+      moreover, multiple categories can apply at the same time. A simulation run
+      in the course of research is ephemeral-instrumental; the same simulation,
+      used to generate figures for a paper, is also ephemeral-rhetorical. A
+      proof-of-concept system is persistent-rhetorical, but if people start to
+      incorporate it into their workflows, it becomes, simultaneously,
+      persistent-instrumental, and there are many more possible combinations.
     </p>
 
     <p>
       Having laid out this framework, we can now ask more precisely: what
       exactly distinguishes &ldquo;research software engineering&rdquo; from
       just &ldquo;software engineering&rdquo;? For whom do we create software
-      and to what end? To answer that, we must first understand the context our
-      language belongs to:
+      and to what end? As shown above, research software can fall into any of
+      these categories, however, the funding models of short-term projects and
+      grant cycles tend to favor the rhetorical and neglect the instrumental.
     </p>
 
     <p>
-      Let us zoom in to software of the rhetorical kind and see where our
-      ordinary language, carried over from the language of industry, fails to
-      reveal the subtle distinctions between the social relations it actually
-      serves. Even for such software, we conduct user research, create user
-      interfaces, design user experiences. Who are these users, anyway? And what
-      relation do we have with them? The truth is, when software is rhetorical,
-      the relation it serves is that of <i>author</i> and <i>audience</i>, and
-      not <i>producer</i> and <i>consumer</i>. The &ldquo;user,&rdquo; in the
-      industry sense, always refers to a set of real socioeconomic participants
-      embedded in a producer-consumer relation. In the context of rhetorical
-      software, that set is empty. What exists in its stead is an audience:
-      people we are trying to <i>convince</i>, not necessarily <i>serve</i>. A
-      reviewer clicking a button is therefore only superficially the same action
-      as a user clicking a button. To conflate the two is a category error. It
-      might be worthwhile to always qualify the terms: &ldquo;<i>rhetorical</i>
-      user research,&rdquo; &ldquo;<i>rhetorical</i> user interface,&rdquo; and
-      &ldquo;<i>rhetorical</i> user experience&rdquo; &mdash; as opposed to
-      &ldquo;<i>instrumental</i> user research,&rdquo; &ldquo;<i
-        >instrumental</i
-      >
-      user interface,&rdquo; and &ldquo;<i>instrumental</i> user
-      experience.&rdquo;
+      Let us zoom in to software of the rhetorical kind and see where the
+      tension lies. We conduct user research, create user interfaces, and design
+      user experiences for rhetorical software just as we do for instrumental
+      software. But who are these users, and what relation do we actually have
+      with them? As we defined above, when software is rhetorical, the relation
+      it serves is that of <i>author</i> and <i>audience</i>, and not
+      <i>producer</i> and <i>consumer</i>. The problem is, what the industry
+      means by &ldquo;user&rdquo; &mdash; and therefore what we mean by default,
+      having borrowed the vocabulary from that context &mdash; is not the sense
+      found in a dictionary. Rather, it refers to real socioeconomic
+      participants embedded in a producer-consumer relation. For rhetorical
+      software, that set of participants is empty. What exists in its place is
+      an audience: people we are trying to <i>convince</i>, not necessarily
+      <i>serve</i>. A reviewer clicking a button is therefore only superficially
+      the same action as a user clicking a button. To conflate the two is a
+      category error. It might be worthwhile to always qualify the terms:
+      &ldquo;<i>rhetorical</i> user research,&rdquo; &ldquo;<i>rhetorical</i>
+      user interface,&rdquo; and &ldquo;<i>rhetorical</i> user
+      experience&rdquo;, as opposed to &ldquo;<i>instrumental</i> user
+      research,&rdquo; &ldquo;<i>instrumental</i> user interface,&rdquo; and
+      &ldquo;<i>instrumental</i> user experience.&rdquo;
     </p>
 
     <p>
@@ -141,24 +124,25 @@
       relation, the consequences are felt concretely: we apply the wrong
       processes and success criteria, invest effort in the wrong places &mdash;
       either over-engineering demos, or under-engineering infrastructure. The
-      result is misaligned expectations, communication friction, and endless
-      frustration and burnout.
+      result is misaligned expectations, communication friction, frustration,
+      and burnout.
     </p>
 
     <p>
       So what&rsquo;s our course of action, in the absence of a shared language
       for rhetorical software? First, we need to establish consensus around the
       language itself. Educating our collaborators is therefore an imperative.
-      Then, we must identify, and constantly recalibrate, monitoring for drift,
-      throughout the course of a project: what kind of software we are making
-      and what social relation it serves at this point in time. Is it primarily
-      rhetorical or instrumental? Persistent or ephemeral? The answers to these
-      questions should dictate how and where we spend our efforts.
+      Then, we must identify &mdash; and constantly recalibrate throughout the
+      course of a project &mdash; what kind of social relations we are
+      participating in at any given moment, and consequently, what kind of
+      software we are making. Is it primarily rhetorical or instrumental?
+      Persistent or ephemeral? How best to spend our efforts hinges on the
+      answers to these questions.
     </p>
 
     <p>
       Once we&rsquo;ve recognized a piece of software as primarily rhetorical,
-      we should put on the hat of a communicator who employs
+      we should take on the role of a communicator who engages in
       <i>computational rhetoric</i>. Instead of asking &ldquo;how do I implement
       this feature?&rdquo; or &ldquo;how do I make this more reliable,
       performant, secure, or user-friendly?&rdquo;, we should ask: is this
@@ -168,17 +152,21 @@
       judgment? Who is the audience, what do they already know or believe, and
       what do they need to know before they could make their own judgment? What
       reasoning or evidence exists to support the argument or exposition, and
-      what is the best modality for each?
+      what is the best modality for each? E.g.:
     </p>
 
     <ul>
       <li><i>Text</i>: e.g. plain text, code listing, mathematical notation</li>
-      <li><i>Data</i>: e.g. raw data, tables</li>
-      <li><i>Image</i>: e.g. pictures, diagrams, plots, 3D renderings</li>
+      <li><i>Data</i>: e.g. raw data, tables, statistical summaries</li>
+      <li><i>Image</i>: e.g. photographs, diagrams, plots, 3D renderings</li>
       <li><i>Audio</i>: e.g. narration, music, sound effects</li>
-      <li><i>Video</i>: e.g. renderings, screen recording, film</li>
-      <li><i>Interactive demos</i></li>
-      <li><i>Live performance</i>: e.g. a talk, a demo session, a workshop</li>
+      <li>
+        <i>Video</i>: e.g. camera footage, screen recording, animation, 3D
+        renderings
+      </li>
+      <li>
+        <i>Interactive</i>: e.g. interactive demos, live performance, workshops
+      </li>
     </ul>
 
     <p>
