@@ -1,0 +1,736 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Anima Mechanismi</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+    <style>
+      .katex { font-size: 1em; }
+      table { border-collapse: collapse; }
+      th, td { border: 1px solid black; padding: 0.3em 0.6em; }
+    </style>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        renderMathInElement(document.body, {
+          delimiters: [
+            { left: "$$", right: "$$", display: true },
+            { left: "$", right: "$", display: false },
+          ],
+        });
+      });
+    </script>
+  </head>
+  <body style="max-width: 640px; margin: 2rem auto">
+    <h1>Anima Mechanismi</h1>
+    <p>A Mathematics Primer for Computer Science</p>
+
+    <hr />
+
+    <blockquote>
+      <p>
+        <em>Comets arrive, ablaze</em><br />
+        <em>with borrowed fire,</em><br />
+        <em>heralds of the everlasting.</em><br />
+        <em>Morning brushes them away.</em>
+      </p>
+      <p>
+        <em>In bedrock&rsquo;s deep,</em><br />
+        <em>a river flows unseen,</em><br />
+        <em>wearing stone, where all that may</em><br />
+        <em>and may not be whispers.</em>
+      </p>
+      <p>
+        <em>Pearls wash ashore,</em><br />
+        <em>gleaming in our palms,</em><br />
+        <em>but seeds that slip and fall&mdash;</em><br />
+        <em>they become trees,</em><br />
+        <em>and trees become forests,</em><br />
+        <em>and we become dust.</em>
+      </p>
+      <p>
+        <em>After brilliance fades,</em><br />
+        <em>a distant silent thunder</em><br />
+        <em>echoes</em><br />
+        <em>from before the dawn of time.</em>
+      </p>
+    </blockquote>
+
+    <hr />
+
+    <h2>Certainty and Universality</h2>
+
+    <h3>Propositional Logic</h3>
+
+    <p>A proposition is a statement that is either true or false.</p>
+
+    <p><strong>Connectives:</strong></p>
+    <ul>
+      <li>$P \land Q$ &mdash; both $P$ and $Q$ are true</li>
+      <li>$P \lor Q$ &mdash; at least one of $P$ or $Q$ is true</li>
+      <li>$\lnot P$ &mdash; $P$ is false</li>
+      <li>$P \Rightarrow Q$ &mdash; if $P$ is true, then $Q$ is true</li>
+      <li>$P \Leftrightarrow Q$ &mdash; $P$ and $Q$ have the same truth value</li>
+    </ul>
+
+    <p><strong>De Morgan&rsquo;s Laws:</strong></p>
+    <ul>
+      <li>$\lnot(P \land Q) \Leftrightarrow (\lnot P) \lor (\lnot Q)$</li>
+      <li>$\lnot(P \lor Q) \Leftrightarrow (\lnot P) \land (\lnot Q)$</li>
+    </ul>
+
+    <h3>First-Order Logic</h3>
+
+    <p>Extends propositional logic with quantifiers over objects.</p>
+
+    <p><strong>Quantifiers:</strong></p>
+    <ul>
+      <li>$\forall x,\ P(x)$ &mdash; $P$ holds for every $x$</li>
+      <li>$\exists x,\ P(x)$ &mdash; $P$ holds for some $x$</li>
+    </ul>
+
+    <p><strong>Variables:</strong></p>
+    <ul>
+      <li>Bound variable: quantified by $\forall$ or $\exists$</li>
+      <li>Free variable: not quantified</li>
+    </ul>
+
+    <h3>Proof Techniques</h3>
+
+    <p><strong>Direct proof:</strong> to prove $P \Rightarrow Q$, assume $P$ is true and derive $Q$.</p>
+
+    <p><strong>Proof by contradiction:</strong> to prove $P$, assume $\lnot P$ and derive a contradiction.</p>
+
+    <p><strong>Proof by contrapositive:</strong> to prove $P \Rightarrow Q$, prove $\lnot Q \Rightarrow \lnot P$.</p>
+
+    <p><strong>Proof by cases:</strong> to prove $P$, split into exhaustive cases and prove each.</p>
+
+    <p><strong>Counterexample:</strong> to disprove $\forall x,\ P(x)$, find one $x$ where $P(x)$ is false.</p>
+
+    <hr />
+
+    <h2>Collection and Connection</h2>
+
+    <h3>Set</h3>
+
+    <p>A set is a collection of distinct objects.</p>
+
+    <p><strong>Notation:</strong></p>
+    <ul>
+      <li>$\{1, 2, 3\}$ &mdash; explicit set</li>
+      <li>$x \in S$ &mdash; $x$ is an element of $S$</li>
+      <li>$A \subseteq B$ &mdash; every element of $A$ is in $B$</li>
+      <li>$\emptyset$ &mdash; the set with no elements</li>
+    </ul>
+
+    <p><strong>Operations:</strong></p>
+    <ul>
+      <li>$A \cup B$ &mdash; elements in $A$ or $B$</li>
+      <li>$A \cap B$ &mdash; elements in both $A$ and $B$</li>
+      <li>$A \setminus B$ &mdash; elements in $A$ but not in $B$</li>
+      <li>$\mathcal{P}(A)$ &mdash; set of all subsets of $A$</li>
+    </ul>
+
+    <h3>Cartesian Product</h3>
+
+    <p>The Cartesian product of sets $A$ and $B$ is the set of all ordered pairs.</p>
+
+    $$A \times B = \{(a, b) \mid a \in A \land b \in B\}$$
+
+    <h3>Algebraic Data Types: Products and Sums</h3>
+
+    <p><strong>Product type $A \times B$:</strong> combines two types into ordered pairs.</p>
+
+    <p><strong>Sum type $A + B$:</strong></p>
+    $$(\{\text{left}\} \times A) \cup (\{\text{right}\} \times B)$$
+    <p>An element from $A$ or $B$, tagged with its origin.</p>
+
+    <h3>Relations</h3>
+
+    <p>A relation $R$ from set $A$ to set $B$ is a subset of $A \times B$.</p>
+
+    <p>$(a, b) \in R$, equivalently written $a \mathrel{R} b$.</p>
+
+    <p><strong>Properties of a relation $R$ on a set $A$:</strong></p>
+    <ul>
+      <li>Reflexive: $\forall x,\ x \mathrel{R} x$</li>
+      <li>Symmetric: $\forall x, y,\ (x \mathrel{R} y) \Rightarrow (y \mathrel{R} x)$</li>
+      <li>Transitive: $\forall x, y, z,\ (x \mathrel{R} y \land y \mathrel{R} z) \Rightarrow (x \mathrel{R} z)$</li>
+      <li>Antisymmetric: $\forall x, y,\ (x \mathrel{R} y \land y \mathrel{R} x) \Rightarrow (x = y)$</li>
+    </ul>
+
+    <h3>Graphs</h3>
+
+    <p>Given a relation $E$ on a set $V$, we can visualize it as a graph.</p>
+
+    <p>A graph $G = (V, E)$ consists of $V$, a set of vertices, and $E \subseteq V \times V$, a set of edges. If $(u, v) \in E$, there is an edge from $u$ to $v$.</p>
+
+    <p><strong>Types:</strong></p>
+    <ul>
+      <li>Directed graph: $E$ uses ordered pairs $(u, v)$</li>
+      <li>Undirected graph: $E$ is symmetric</li>
+    </ul>
+
+    <p><strong>Terminology:</strong></p>
+    <ul>
+      <li>Path: sequence $v_1, v_2, \ldots, v_n$ where $(v_i, v_{i+1}) \in E$</li>
+      <li>Cycle: path where first and last vertex are the same</li>
+      <li>Connected: $\forall u, v \in V,\ \exists$ path from $u$ to $v$</li>
+      <li>Tree: connected graph with no cycles</li>
+    </ul>
+
+    <h3>Equivalence Relations</h3>
+
+    <p>An equivalence relation is reflexive, symmetric, and transitive.</p>
+
+    <p>The equivalence class of $x$:</p>
+    $$[x] = \{y \mid x \sim y\}$$
+
+    <p>An equivalence relation partitions a set into disjoint equivalence classes.</p>
+
+    <h3>Partial Orders</h3>
+
+    <p>A partial order is a relation that is reflexive, antisymmetric, and transitive. A partially ordered set (poset) $(S, \preceq)$ has special elements:</p>
+    <ul>
+      <li>Minimal: no element precedes it</li>
+      <li>Maximal: it precedes no element</li>
+      <li>Least: precedes all elements</li>
+      <li>Greatest: all elements precede it</li>
+    </ul>
+
+    <h3>Functions</h3>
+
+    <p>A function $f: A \to B$ is a relation where each input maps to exactly one output:</p>
+
+    $$\forall a \in A,\ \exists!\, b \in B,\ (a, b) \in f$$
+
+    <p><strong>Properties:</strong></p>
+    <ul>
+      <li>Injective (one-to-one): different inputs map to different outputs</li>
+      <li>Surjective (onto): every element of $B$ is mapped to</li>
+      <li>Bijective: both injective and surjective</li>
+    </ul>
+
+    <p><strong>Composition:</strong></p>
+    $$(g \circ f)(x) = g(f(x))$$
+
+    <h3>Algebraic Data Types: Function Types</h3>
+
+    <p>The function type $A \to B$ contains all functions mapping $A$ to $B$. Higher-order functions take or return functions; e.g., $(A \to B) \to (B \to C) \to (A \to C)$ is the type of function composition.</p>
+
+    <hr />
+
+    <h2>Enumeration and Generation</h2>
+
+    <h3>Natural Numbers</h3>
+
+    <p>The natural numbers $\mathbb{N} = \{0, 1, 2, 3, \ldots\}$ represent counting. They are defined by the Peano axioms: zero is a natural number; every natural number has a unique successor; zero is not a successor; distinct numbers have distinct successors.</p>
+
+    <h3>Sequences</h3>
+
+    <p>A sequence is a function $s: \mathbb{N} \to S$, written $s_0, s_1, s_2, \ldots$</p>
+    <p>A finite sequence of length $n$ is a function from $\{0, 1, \ldots, n-1\}$ to $S$.</p>
+
+    <h3>Mathematical Induction</h3>
+
+    <p>To prove $\forall n \in \mathbb{N},\ P(n)$:</p>
+    <ol>
+      <li>Base case: prove $P(0)$</li>
+      <li>Inductive step: prove $\forall k,\ P(k) \Rightarrow P(k+1)$</li>
+    </ol>
+
+    <p><strong>Strong induction:</strong> the inductive step uses $P(0), P(1), \ldots, P(k)$ to prove $P(k+1)$.</p>
+
+    <h3>Inductive Definitions</h3>
+
+    <p>Objects defined recursively using base cases and inductive rules.</p>
+
+    <p><strong>Factorial:</strong></p>
+    $$0! = 1 \qquad n! = n \cdot (n-1)!$$
+
+    <p><strong>Sum:</strong></p>
+    $$\text{sum}(0) = 0 \qquad \text{sum}(n) = n + \text{sum}(n-1)$$
+
+    <h3>Algebraic Data Types: Recursive Types</h3>
+
+    <p><strong>List type:</strong></p>
+    <pre><code>List(A) = Empty | Cons(A, List(A))</code></pre>
+
+    <p><strong>Tree type:</strong></p>
+    <pre><code>Tree(A) = Leaf | Node(Tree(A), A, Tree(A))</code></pre>
+
+    <h3>Recursion</h3>
+
+    <p>A recursive function calls itself, with a base case and a recursive case that reduces toward the base. Example &mdash; Fibonacci:</p>
+    $$\text{fib}(0) = 0 \qquad \text{fib}(1) = 1 \qquad \text{fib}(n) = \text{fib}(n-1) + \text{fib}(n-2)$$
+
+    <h3>Combinatorics</h3>
+
+    <p><strong>Permutations of $k$ from $n$:</strong></p>
+    $$P(n, k) = n \cdot P(n-1, k-1) = \frac{n!}{(n-k)!}$$
+
+    <p><strong>Combinations:</strong></p>
+    $$\binom{n}{k} = \binom{n-1}{k-1} + \binom{n-1}{k} = \frac{n!}{k!\,(n-k)!}$$
+
+    <hr />
+
+    <h2>Plurality and Uncertainty</h2>
+
+    <h3>Construction of Number Systems</h3>
+
+    <p>Number systems are constructed from simpler ones using equivalence relations.</p>
+
+    <ul>
+      <li><strong>Integers</strong> $\mathbb{Z} = \{\ldots, -2, -1, 0, 1, 2, \ldots\}$: equivalence classes on $\mathbb{N} \times \mathbb{N}$</li>
+      <li><strong>Rationals</strong> $\mathbb{Q} = \{p/q \mid p, q \in \mathbb{Z},\ q \neq 0\}$: equivalence classes on $\mathbb{Z} \times (\mathbb{Z} \setminus \{0\})$</li>
+      <li><strong>Reals</strong> $\mathbb{R}$: constructed via Dedekind cuts or Cauchy sequences of rationals</li>
+    </ul>
+
+    <h3>Algebraic Structures</h3>
+
+    <p>An algebraic structure $(S, *)$ pairs a set $S$ with a binary operation $*: S \times S \to S$ satisfying specified axioms. Different axioms define different structures: monoids, groups, rings, fields.</p>
+
+    <h3>Monoids</h3>
+
+    <p>A monoid $(M, *, e)$ satisfies associativity and has an identity element:</p>
+    <ul>
+      <li>$(a * b) * c = a * (b * c)$</li>
+      <li>$e * a = a * e = a$</li>
+    </ul>
+
+    <p><strong>Examples:</strong></p>
+    <ul>
+      <li>$(\mathbb{N}, +, 0)$, $(\mathbb{N}, \cdot, 1)$, $(\mathbb{Z}, +, 0)$, $(\mathbb{Q}, +, 0)$, $(\mathbb{R}, +, 0)$</li>
+      <li>$(\mathbb{Q} \setminus \{0\},\ \cdot,\ 1)$</li>
+      <li>(sequences over $A$, concatenation, $\varepsilon$)</li>
+      <li>$(A \to A,\ \circ,\ \text{id})$ &mdash; functions under composition</li>
+    </ul>
+
+    <h3>Limits and Convergence</h3>
+
+    <p>A sequence $(s_n)$ has limit $L$ if:</p>
+    $$\forall \varepsilon > 0,\ \exists N,\ \forall n \geq N,\ d(s_n, L) < \varepsilon$$
+
+    $$\lim_{n \to \infty} s_n = L$$
+    <p>A series $\sum a_n$ converges if its partial sums converge.</p>
+
+    <h3>Sample Spaces and Events</h3>
+
+    <p>A probability space consists of a sample space $\Omega$ (all possible outcomes) and events, which are subsets of $\Omega$.</p>
+
+    <h3>Probability Function</h3>
+
+    <p>A probability function $P$ assigns probabilities to events, satisfying:</p>
+    <ul>
+      <li>$P(\Omega) = 1$</li>
+      <li>$P(A) \geq 0$ for all events $A$</li>
+      <li>$P(A \cup B) = P(A) + P(B)$ when $A, B$ are disjoint</li>
+    </ul>
+
+    <h3>Conditional Probability</h3>
+
+    $$P(A \mid B) = \frac{P(A \cap B)}{P(B)}$$
+
+    <p>Events $A$ and $B$ are <em>independent</em> if $P(A \cap B) = P(A) \cdot P(B)$.</p>
+
+    <h3>Random Variables</h3>
+
+    <p>A random variable is a function $X: \Omega \to \mathbb{R}$. Its probability mass function is $p(x) = P(X = x)$, satisfying $\sum p(x) = 1$ and $p(x) \geq 0$.</p>
+
+    <h3>Expected Value</h3>
+
+    $$E[X] = \sum_i x_i \cdot p(x_i)$$
+
+    <h3>Variance</h3>
+
+    $$\text{Var}(X) = E\!\left[(X - E[X])^2\right] = E[X^2] - (E[X])^2$$
+    $$\text{SD}(X) = \sqrt{\text{Var}(X)}$$
+
+    <h3>Covariance</h3>
+
+    $$\text{Cov}(X, Y) = E\!\left[(X - E[X])(Y - E[Y])\right]$$
+    $$\text{Cor}(X, Y) = \frac{\text{Cov}(X, Y)}{\text{SD}(X) \cdot \text{SD}(Y)} \in [-1, 1]$$
+
+    <h3>Limit Theorems</h3>
+
+    <p><strong>Law of Large Numbers:</strong></p>
+    $$\lim_{n \to \infty} \frac{X_1 + X_2 + \cdots + X_n}{n} = \mu$$
+
+    <p><strong>Central Limit Theorem:</strong> the standardized sum of independent random variables converges to a normal distribution.</p>
+
+    <h3>Entropy</h3>
+
+    <p>Entropy measures uncertainty in a random variable $X$ with probabilities $p_1, \ldots, p_n$:</p>
+    $$H(X) = -\sum_i p_i \log_2 p_i$$
+    <p>Measured in bits; $H(X)$ is the average number of bits needed to encode $X$.</p>
+
+    <h3>Mutual Information</h3>
+
+    $$I(X;Y) = H(X) + H(Y) - H(X,Y)$$
+    <p>Represents how much knowing $Y$ reduces uncertainty about $X$.</p>
+
+    <hr />
+
+    <h2>Notation and Articulation</h2>
+
+    <h3>Alphabets</h3>
+
+    <p>An alphabet $\Sigma$ is a finite set of symbols, e.g., $\Sigma = \{0, 1\}$ or $\Sigma = \{a, b, \ldots, z\}$.</p>
+
+    <h3>Strings</h3>
+
+    <p>A string over $\Sigma$ is a finite sequence over $\Sigma$. The empty string is $\varepsilon$; the length of string $s$ is $|s|$; concatenation juxtaposes two strings.</p>
+
+    <h3>Kleene Star</h3>
+
+    <p>$\Sigma^*$ is the set of all strings over $\Sigma$:</p>
+    $$\Sigma^* = \Sigma^0 \cup \Sigma^1 \cup \Sigma^2 \cup \cdots$$
+    <p>where $\Sigma^0 = \{\varepsilon\}$, $\Sigma^1 = \Sigma$, $\Sigma^n = \{s_1 s_2 \mid s_1 \in \Sigma^{n-1},\ s_2 \in \Sigma\}$.</p>
+    <p>$\Sigma^+ = \Sigma^* \setminus \{\varepsilon\}$ denotes all non-empty strings.</p>
+
+    <h3>Regular Languages</h3>
+
+    <p>A regular language over $\Sigma$ is built from basic languages using regular operations.</p>
+
+    <p><strong>Basic languages:</strong> $\emptyset$, $\{\varepsilon\}$, and $\{a\}$ for each $a \in \Sigma$.</p>
+
+    <p><strong>Regular operations:</strong></p>
+    <ul>
+      <li>Union: $L_1 \cup L_2$</li>
+      <li>Concatenation: $L_1 L_2 = \{s_1 s_2 \mid s_1 \in L_1,\ s_2 \in L_2\}$</li>
+      <li>Kleene star: $L^* = L^0 \cup L^1 \cup L^2 \cup \cdots$</li>
+    </ul>
+
+    <p>Regular languages are closed under union, intersection, complement, concatenation, and Kleene star. Regular expressions provide notation for describing them.</p>
+
+    <h3>Context-Free Languages</h3>
+
+    <p>A context-free grammar $G = (V, T, P, S)$ consists of variables $V$, terminals $T$, production rules $P$, and a start variable $S$.</p>
+
+    <p><strong>Example &mdash; balanced parentheses:</strong></p>
+    <pre><code>S ::= ε | (S) | SS</code></pre>
+
+    <p><strong>Example &mdash; arithmetic expressions:</strong></p>
+    <pre><code>&lt;expr&gt; ::= &lt;number&gt;
+         | &lt;expr&gt; + &lt;expr&gt;
+         | &lt;expr&gt; * &lt;expr&gt;
+         | (&lt;expr&gt;)</code></pre>
+
+    <p><strong>Example &mdash; statements:</strong></p>
+    <pre><code>&lt;stmt&gt; ::= &lt;var&gt; := &lt;expr&gt;
+         | &lt;stmt&gt; ; &lt;stmt&gt;
+         | if &lt;expr&gt; then &lt;stmt&gt; else &lt;stmt&gt;
+         | while &lt;expr&gt; do &lt;stmt&gt;</code></pre>
+
+    <hr />
+
+    <h2>Mutation and Verification</h2>
+
+    <h3>State</h3>
+
+    <p>A state is a function $s: \text{Var} \to \text{Val}$. The update $s[x \mapsto v]$ is the state identical to $s$ except $x$ maps to $v$:</p>
+    $$s[x \mapsto v](y) = \begin{cases} v & \text{if } y = x \\ s(y) & \text{if } y \neq x \end{cases}$$
+
+    <h3>Denotational Semantics</h3>
+
+    <p>Denotational semantics interprets programs as mathematical objects: expressions denote values; statements denote state transformations $\text{State} \to \text{State}$.</p>
+
+    <p><strong>Expressions:</strong></p>
+    $$\begin{aligned}
+    \llbracket n \rrbracket(s) &= n \\
+    \llbracket x \rrbracket(s) &= s(x) \\
+    \llbracket e_1 + e_2 \rrbracket(s) &= \llbracket e_1 \rrbracket(s) + \llbracket e_2 \rrbracket(s) \\
+    \llbracket e_1 \times e_2 \rrbracket(s) &= \llbracket e_1 \rrbracket(s) \times \llbracket e_2 \rrbracket(s)
+    \end{aligned}$$
+
+    <p><strong>Statements:</strong></p>
+    $$\begin{aligned}
+    \llbracket x := e \rrbracket(s) &= s[x \mapsto \llbracket e \rrbracket(s)] \\
+    \llbracket c_1;\, c_2 \rrbracket(s) &= \llbracket c_2 \rrbracket(\llbracket c_1 \rrbracket(s))
+    \end{aligned}$$
+
+    <h3>Rewrite Systems</h3>
+
+    <p>A rewrite system $(T, R)$ pairs a set of terms with rewrite rules $L \to R$. A term $t$ rewrites to $t'$ (written $t \to t'$) if $t$ contains $L$ and $t'$ replaces it with $R$.</p>
+
+    <p><strong>Desirable properties:</strong></p>
+    <ul>
+      <li>Confluence: if $t \to t_1$ and $t \to t_2$, then $\exists t_3$ with $t_1 \to^* t_3$ and $t_2 \to^* t_3$</li>
+      <li>Termination: no infinite rewrite sequences</li>
+      <li>Normal form: a term that cannot be rewritten further</li>
+    </ul>
+
+    <h3>Lambda Calculus</h3>
+
+    <p>Lambda calculus is a formal system for expressing computation via functions.</p>
+
+    <p><strong>Syntax:</strong></p>
+    $$M\ ::=\ x\ \mid\ \lambda x.\ M\ \mid\ M_1\, M_2$$
+
+    <p><strong>$\beta$-reduction:</strong></p>
+    $$(\lambda x.\ M)\, N \longrightarrow_\beta M[x := N]$$
+    <p>where $M[x := N]$ substitutes $N$ for all free occurrences of $x$ in $M$.</p>
+
+    <h3>Type Systems</h3>
+
+    <p>A type system assigns types to terms and enforces constraints on their use. A typing judgment $\Gamma \vdash t : T$ means &ldquo;in context $\Gamma$, term $t$ has type $T$&rdquo;.</p>
+
+    <p><strong>Simple types:</strong> base types $\text{Bool}$, $\text{Nat}$, $\text{Int}$; function type $T_1 \to T_2$; product type $T_1 \times T_2$; sum type $T_1 + T_2$.</p>
+
+    <p><strong>Type safety</strong> requires:</p>
+    <ul>
+      <li>Progress: well-typed terms either are values or can take a step</li>
+      <li>Preservation: if $\vdash t : T$ and $t \to t'$, then $\vdash t' : T$</li>
+    </ul>
+
+    <h3>Simply Typed Lambda Calculus</h3>
+
+    <p><strong>Syntax:</strong></p>
+    $$t\ ::=\ x\ \mid\ \lambda x : T.\ t\ \mid\ t_1\, t_2$$
+
+    <p><strong>Typing rules:</strong></p>
+
+        $$\dfrac{\Gamma(x) = T}{\Gamma \vdash x : T} \quad \text{Var}$$
+        $$\dfrac{\Gamma,\, x : T_1 \vdash t : T_2}{\Gamma \vdash \lambda x : T_1.\ t\ :\ T_1 \to T_2} \quad \text{Abs}$$
+        $$\dfrac{\Gamma \vdash t_1 : T_1 \to T_2 \qquad \Gamma \vdash t_2 : T_1}{\Gamma \vdash t_1\, t_2 : T_2} \quad \text{App}$$
+
+    <h3>Polymorphism</h3>
+
+    <p>Parametric polymorphism allows types with type variables (type schemes $\forall \alpha.\ T$). Examples:</p>
+    $$\forall \alpha.\ \alpha \to \alpha \qquad \forall \alpha.\ \text{List}(\alpha)$$
+
+    <h3>Curry&ndash;Howard Correspondence</h3>
+
+    <p>Types correspond to logical propositions; programs correspond to proofs:</p>
+
+    <table>
+      <thead><tr><th>Type</th><th>Proposition</th></tr></thead>
+      <tbody>
+        <tr><td>$T_1 \to T_2$</td><td>$T_1 \Rightarrow T_2$</td></tr>
+        <tr><td>$T_1 \times T_2$</td><td>$T_1 \land T_2$</td></tr>
+        <tr><td>$T_1 + T_2$</td><td>$T_1 \lor T_2$</td></tr>
+      </tbody>
+    </table>
+    <p>A term of type $T$ is a proof of proposition $T$.</p>
+
+    <h3>Operational Semantics: Small-Step</h3>
+
+    <p>Small-step semantics defines individual computation steps via a transition relation $\langle e, s \rangle \to \langle e', s' \rangle$.</p>
+
+    <p><strong>Expression rules:</strong></p>
+
+        $$\dfrac{}{\langle x, s \rangle \to \langle s(x), s \rangle}$$
+        $$\dfrac{\langle e_1, s \rangle \to \langle e_1', s' \rangle}{\langle e_1 + e_2, s \rangle \to \langle e_1' + e_2, s' \rangle}$$
+
+    <p><strong>Statement rules:</strong></p>
+
+        $$\dfrac{\langle e, s \rangle \to \langle e', s' \rangle}{\langle x := e, s \rangle \to \langle x := e', s' \rangle}$$
+        $$\dfrac{}{\langle x := v, s \rangle \to \langle \mathtt{skip}, s[x \mapsto v] \rangle}$$
+
+        $$\dfrac{\langle c_1, s \rangle \to \langle c_1', s' \rangle}{\langle c_1;\, c_2, s \rangle \to \langle c_1';\, c_2, s' \rangle}$$
+        $$\dfrac{}{\langle \mathtt{skip};\, c_2, s \rangle \to \langle c_2, s \rangle}$$
+
+    <h3>Operational Semantics: Big-Step</h3>
+
+    <p>Big-step semantics defines complete evaluation: $\langle e, s \rangle \Downarrow v$ (expression evaluates to value) and $\langle c, s \rangle \Downarrow s'$ (command transforms state).</p>
+
+    <p><strong>Expression rules:</strong></p>
+
+        $$\dfrac{}{\langle n, s \rangle \Downarrow n}$$
+        $$\dfrac{\langle e_1, s \rangle \Downarrow n_1 \qquad \langle e_2, s \rangle \Downarrow n_2}{\langle e_1 + e_2, s \rangle \Downarrow n_1 + n_2}$$
+
+    <p><strong>Statement rules:</strong></p>
+
+        $$\dfrac{\langle e, s \rangle \Downarrow v}{\langle x := e, s \rangle \Downarrow s[x \mapsto v]}$$
+        $$\dfrac{\langle c_1, s \rangle \Downarrow s' \qquad \langle c_2, s' \rangle \Downarrow s''}{\langle c_1;\, c_2, s \rangle \Downarrow s''}$$
+
+    <h3>Hoare Logic</h3>
+
+    <p>Hoare logic provides formal reasoning about program correctness. A Hoare triple $\{P\}\, c\, \{Q\}$ states: if $P$ holds before executing $c$, then $Q$ holds afterward.</p>
+
+    <p><strong>Inference rules:</strong></p>
+
+        $$\dfrac{}{\{P[x \mapsto e]\}\; x := e\; \{P\}} \quad \text{Assign}$$
+        $$\dfrac{\{P\}\, c_1\, \{Q\} \qquad \{Q\}\, c_2\, \{R\}}{\{P\}\, c_1;\, c_2\, \{R\}} \quad \text{Seq}$$
+
+        $$\dfrac{\{P \land b\}\, c_1\, \{Q\} \qquad \{P \land \lnot b\}\, c_2\, \{Q\}}{\{P\}\;\mathtt{if}\; b\;\mathtt{then}\; c_1\;\mathtt{else}\; c_2\;\{Q\}} \quad \text{If}$$
+
+        $$\dfrac{\{I \land b\}\, c\, \{I\}}{\{I\}\;\mathtt{while}\; b\;\mathtt{do}\; c\;\{I \land \lnot b\}} \quad \text{While}$$
+        $$\dfrac{P' \Rightarrow P \qquad \{P\}\, c\, \{Q\} \qquad Q \Rightarrow Q'}{\{P'\}\, c\, \{Q'\}} \quad \text{Cons}$$
+
+    <p><strong>Examples:</strong></p>
+    $$\{x = 5\}\; y := x + 1\; \{y = 6\}$$
+    $$\{x > 0\}\;\mathtt{while}\; x > 0\;\mathtt{do}\; x := x - 1\;\{x = 0\}$$
+
+    <h3>Temporal Logic</h3>
+
+    <p>Temporal logic formalizes reasoning about execution sequences. Key operators over an infinite state sequence:</p>
+    <ul>
+      <li>$\bigcirc\, p$ &mdash; $p$ holds in the next state</li>
+      <li>$\Diamond\, p$ &mdash; $p$ holds in some future state (eventually)</li>
+      <li>$\Box\, p$ &mdash; $p$ holds in all future states (always)</li>
+      <li>$p\; \mathcal{U}\; q$ &mdash; $p$ holds until $q$ holds</li>
+    </ul>
+
+    <p><strong>Example:</strong></p>
+    $$\Box\,(\text{request} \Rightarrow \Diamond\,\text{response})$$
+
+    <hr />
+
+    <h2>Automation and Imitation</h2>
+
+    <h3>Transition Systems</h3>
+
+    <p>A transition system $(S, s_0, T)$ consists of a set of states $S$, initial state $s_0$, and transition relation $T \subseteq S \times S$. An execution is a sequence $s_0, s_1, s_2, \ldots$ where $(s_i, s_{i+1}) \in T$.</p>
+
+    <h3>Semiautomata</h3>
+
+    <p>A semiautomaton $(S, \Sigma, \delta)$ adds an input alphabet $\Sigma$ with transition function $\delta: S \times \Sigma \to S$. Reading input string $a_1 a_2 \cdots a_n$ produces a state sequence starting from $s_0$.</p>
+
+    <h3>Finite State Automata</h3>
+
+    <p>A finite state automaton $(Q, \Sigma, \delta, q_0, F)$ recognizes languages by accepting or rejecting strings.</p>
+    <ul>
+      <li>$Q$ &mdash; finite set of states</li>
+      <li>$\Sigma$ &mdash; input alphabet</li>
+      <li>$\delta$ &mdash; transition function</li>
+      <li>$q_0$ &mdash; initial state</li>
+      <li>$F \subseteq Q$ &mdash; set of accept states</li>
+    </ul>
+
+    <p><strong>Deterministic FSA (DFA):</strong> $\delta: Q \times \Sigma \to Q$ gives exactly one next state.</p>
+
+    <p><strong>Nondeterministic FSA (NFA):</strong> $\delta: Q \times \Sigma \to \mathcal{P}(Q)$ gives a set of possible next states.</p>
+
+    <p><strong>Equivalence:</strong> for every NFA there exists an equivalent DFA, via the subset construction (states of DFA = subsets of NFA states).</p>
+
+    <h3>Pushdown Automata</h3>
+
+    <p>A pushdown automaton $(Q, \Sigma, \Gamma, \delta, q_0, Z_0, F)$ extends a FSA with a stack.</p>
+    <ul>
+      <li>$\Gamma$ &mdash; stack alphabet</li>
+      <li>$\delta: Q \times (\Sigma \cup \{\varepsilon\}) \times \Gamma \to \mathcal{P}(Q \times \Gamma^*)$</li>
+      <li>$Z_0$ &mdash; initial stack symbol</li>
+    </ul>
+
+    <p>Deterministic and nondeterministic PDAs are <em>not</em> equivalent. Nondeterministic PDAs recognize exactly the context-free languages.</p>
+
+    <h3>Turing Machines</h3>
+
+    <p>A Turing machine $(Q, \Sigma, \Gamma, \delta, q_0, q_\text{accept}, q_\text{reject})$ has an infinite tape.</p>
+    <ul>
+      <li>$\Gamma$ &mdash; tape alphabet ($\Sigma \subseteq \Gamma$)</li>
+      <li>$\delta: Q \times \Gamma \to Q \times \Gamma \times \{L, R\}$</li>
+    </ul>
+
+    <p>At each step: read the symbol under the head, write a symbol, move left ($L$) or right ($R$).</p>
+
+    <p><strong>Nondeterministic Turing Machine (NTM):</strong></p>
+    $$\delta: Q \times \Gamma \to \mathcal{P}(Q \times \Gamma \times \{L, R\})$$
+    <p>DTMs and NTMs recognize the same languages.</p>
+
+    <h3>Universal Turing Machine</h3>
+
+    <p>A universal Turing machine $U$ takes $\langle M, w \rangle$ (an encoding of machine $M$ and input $w$) and simulates $M$ on $w$. $U$ accepts iff $M$ accepts $w$; $U$ rejects iff $M$ rejects $w$.</p>
+
+    <h3>Church&ndash;Turing Thesis</h3>
+
+    <p>All reasonable models of computation are equivalent in power: Turing machines, lambda calculus, and every other proposed model compute exactly the same class of functions (the computable functions). This is supported by evidence but is not a mathematical theorem.</p>
+
+    <hr />
+
+    <h2>Complexity and Impossibility</h2>
+
+    <h3>Asymptotic Complexity</h3>
+
+    <p><strong>Big-$O$ (upper bound):</strong> $f(n) = O(g(n))$ if</p>
+    $$\exists c \in \mathbb{R}^+,\ \exists n_0 \in \mathbb{N},\ \forall n \geq n_0:\ f(n) \leq c \cdot g(n)$$
+
+    <p><strong>Big-$\Omega$ (lower bound):</strong> $f(n) = \Omega(g(n))$ if</p>
+    $$\exists c \in \mathbb{R}^+,\ \exists n_0 \in \mathbb{N},\ \forall n \geq n_0:\ f(n) \geq c \cdot g(n)$$
+
+    <p><strong>Big-$\Theta$ (tight bound):</strong> $f(n) = \Theta(g(n))$ if $f(n) = O(g(n))$ and $f(n) = \Omega(g(n))$</p>
+
+    <h3>Time Complexity</h3>
+
+    <p>Common classes: $O(1)$, $O(\log n)$, $O(n)$, $O(n \log n)$, $O(n^2)$, $O(2^n)$.</p>
+
+    <h3>Space Complexity</h3>
+
+    <p>Common classes: $O(1)$, $O(\log n)$, $O(n)$, $O(n^k)$.</p>
+
+    <h3>Complexity Classes: <strong>P</strong></h3>
+
+    $$\mathbf{P} = \{L \mid L \text{ decidable by a deterministic TM in polynomial time}\}$$
+
+    <h3>Complexity Classes: <strong>NP</strong></h3>
+
+    $$\mathbf{NP} = \{L \mid L \text{ decidable by a nondeterministic TM in polynomial time}\}$$
+
+    <p>Equivalently: $L \in \mathbf{NP}$ iff there exists a polynomial-time verifier $V$ and certificate $c$ such that:</p>
+    $$x \in L \Leftrightarrow V(x, c) \text{ accepts}$$
+
+    <h3>Polynomial-Time Reductions</h3>
+
+    <p>$A \leq_p B$ (a Karp reduction) if $\exists$ polynomial-time $f$ such that:</p>
+    $$x \in A \Leftrightarrow f(x) \in B$$
+    <ul>
+      <li>If $A \leq_p B$ and $B \in \mathbf{P}$, then $A \in \mathbf{P}$</li>
+      <li>If $A \leq_p B$ and $A \notin \mathbf{P}$, then $B \notin \mathbf{P}$</li>
+    </ul>
+
+    <h3>NP-Completeness</h3>
+
+    <p>$L$ is $\mathbf{NP}$-complete if $L \in \mathbf{NP}$ and:</p>
+    $$\forall A \in \mathbf{NP},\ A \leq_p L$$
+    <ul>
+      <li>If any $\mathbf{NP}$-complete problem is in $\mathbf{P}$, then $\mathbf{P} = \mathbf{NP}$</li>
+      <li>If any $\mathbf{NP}$-complete problem is not in $\mathbf{P}$, then $\mathbf{P} \neq \mathbf{NP}$</li>
+    </ul>
+
+    <h3>P vs NP</h3>
+
+    <p>Can every problem whose solution is verifiable in polynomial time also be <em>solved</em> in polynomial time? Status: open.</p>
+
+    <h3>Turing Reductions</h3>
+
+    <p>$A \leq_T B$ if there exists a Turing machine with oracle for $B$ that decides $A$.</p>
+    <ul>
+      <li>If $B$ is decidable, then $A$ is decidable</li>
+      <li>If $A$ is undecidable, then $B$ is undecidable</li>
+    </ul>
+
+    <h3>Halting Problem</h3>
+
+    <p>Given $\langle M, w \rangle$, does $M$ halt on $w$?</p>
+
+    <p><strong>Theorem:</strong> the halting problem is undecidable.</p>
+
+    <p><strong>Proof.</strong> Assume $H$ decides the halting problem. Construct:</p>
+    <pre><code>D(⟨M⟩):
+  if H(⟨M⟩, ⟨M⟩) accepts: loop forever
+  if H(⟨M⟩, ⟨M⟩) rejects:  halt</code></pre>
+    <p>Then $D(\langle D \rangle)$: if $H(\langle D \rangle, \langle D \rangle)$ accepts, $D$ loops (contradiction); if it rejects, $D$ halts (contradiction). Therefore $H$ cannot exist. $\square$</p>
+
+    <h3>Rice&rsquo;s Theorem</h3>
+
+    <p>All non-trivial semantic properties of Turing machine languages are undecidable: if $\mathcal{P}$ is a non-trivial property of languages, then &ldquo;does $M$ recognize a language with property $\mathcal{P}$?&rdquo; is undecidable.</p>
+
+    <h3>G&ouml;del&rsquo;s First Incompleteness Theorem</h3>
+
+    <p>In any consistent formal system $F$ sufficiently powerful to express arithmetic, there exists a statement $G$ that is true but neither $G$ nor $\lnot G$ is provable in $F$. The system is <em>incomplete</em>.</p>
+
+    <p>The proof uses self-reference analogous to the halting problem: &ldquo;this statement is not provable.&rdquo;</p>
+
+    <h3>G&ouml;del&rsquo;s Second Incompleteness Theorem</h3>
+
+    <p>A consistent formal system $F$ cannot prove its own consistency:</p>
+    $$F \not\vdash \text{Con}(F)$$
+
+    <hr />
+
+    <p><em>Incompleteness in logic and undecidability in computation both reveal fundamental limits of formal systems. No algorithmic procedure can decide all mathematical truths. There is no complete and consistent axiomatization of mathematics.</em></p>
+  </body>
+</html>
