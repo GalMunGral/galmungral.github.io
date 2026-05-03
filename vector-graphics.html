@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>2D Vector Graphics: A Survey</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+    <style>.katex { font-size: 1em; }</style>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        renderMathInElement(document.body, {
+          delimiters: [
+            { left: "$$", right: "$$", display: true },
+            { left: "\\(", right: "\\)", display: false },
+          ],
+        });
+      });
+    </script>
+  </head>
+  <body style="max-width: 640px; margin: 2rem auto">
+    <h1>2D Vector Graphics: A Survey</h1>
+
+    <p>
+      <small
+        ><a href="index.html">Wenqi He</a> &middot; Research Software Engineer,
+        NCSA, University of Illinois</small
+      >
+    </p>
+
+    <p>
+      <small><em>Extracted from my presentation slides by Claude (Anthropic).</em></small>
+    </p>
+
+    <p>
+      A vector graphics renderer takes a list of shapes &mdash; each defined by
+      curves and a fill rule &mdash; and produces a pixel buffer. The problem
+      looks deceptively simple. In practice it spans a surprisingly wide slice
+      of computer science: computational geometry, numerical algorithms, GPU
+      architecture, and signal processing. This is an algorithmic tour from
+      first principles to the state of the art.
+    </p>
+
+    <h2>Part I &mdash; The Inside-Outside Test</h2>
+
+    <p>
+      The fundamental question in vector rasterization is: given a closed curve
+      and a point, is the point inside or outside? The standard answer is the
+      <i>winding number</i> &mdash; the number of times the curve wraps
+      counterclockwise around the point. Formally, for a closed curve
+      &gamma; and a point <i>p</i>,
+    </p>
+
+    $$w(\gamma, p) = \frac{1}{2\pi} \oint d\theta$$
+
+    <p>
+      Two fill rules are in common use. The <i>non-zero rule</i> considers a
+      point inside if the winding number is non-zero; the <i>even-odd rule</i>
+      considers it inside if the winding number is odd. They agree whenever the
+      curve has no self-intersections.
+    </p>
+
+    <p>
+      To implement this for curves defined by cubic polynomial segments, we
+      count signed crossings of a ray cast from the point. Each crossing
+      contributes +1 or &minus;1 depending on the direction of travel. Finding
+      the crossings requires solving for the roots of a cubic polynomial &mdash;
+      the <i>t</i> values where the curve crosses the ray &mdash; which can be
+      done analytically or by a robust numerical method.
+    </p>
+
+    <h2>Part II &mdash; Software Rasterization</h2>
+
+    <p>
+      In practice, the curves are B&eacute;zier curves. A cubic B&eacute;zier
+      is defined by four control points <i>p</i><sub>0</sub>,&hellip;,<i>p</i><sub>3</sub>
+      and parameterized using the Bernstein basis:
+    </p>
+
+    $$B(t) = (1-t)^3 p_0 + 3t(1-t)^2 p_1 + 3t^2(1-t)\, p_2 + t^3 p_3$$
+
+    <p>
+      The most elegant algorithm for evaluating this is <i>de Casteljau&rsquo;s
+      algorithm</i>, which replaces the polynomial with repeated linear
+      interpolation:
+    </p>
+
+    <pre>
+def bezier(t, p0, p1, p2, p3):
+    p4 = lerp(p0, p1, t)
+    p5 = lerp(p1, p2, t)
+    p6 = lerp(p2, p3, t)
+    p7 = lerp(p4, p5, t)
+    p8 = lerp(p5, p6, t)
+    return lerp(p7, p8, t)
+
+def lerp(a, b, t):
+    return (1 - t) * a + t * b</pre>
+
+    <p>
+      Beyond evaluation, de Casteljau&rsquo;s algorithm also gives a clean
+      subdivision: the intermediate points at parameter <i>t</i> are the
+      control points of the two sub-curves on [0,<i>t</i>] and
+      [<i>t</i>,1]. This underlies <i>adaptive subdivision</i>, which
+      recursively splits a curve until each piece is flat enough to be
+      approximated by a line segment:
+    </p>
+
+    <pre>
+def flatten(curve):
+    if flatness(curve) &lt; eps:
+        vertices.append(curve.p3)
+    else:
+        l, r = subdivide(curve)
+        flatten(l)
+        flatten(r)</pre>
+
+    <p>
+      Once the curves are flattened to polygons, <i>scanline rasterization</i>
+      fills them. For each scanline <i>y</i>, we find all edge crossings,
+      sort them by <i>x</i>, and scan left to right, tracking the winding
+      number. Pixels between crossings where the winding number satisfies the
+      fill rule are filled:
+    </p>
+
+    <pre>
+def rasterize(polygon, buf):
+    for y in polygon.y_range:
+        xs = polygon.intersect(y)
+        wn = 0
+        for i in range(len(xs) - 1):
+            wn += xs[i].sign
+            if not inside(wn): continue
+            for x in range(xs[i].x, xs[i+1].x):
+                buf[y, x] = over(polygon.color(x, y), buf[y, x])</pre>
+
+    <p>
+      The naive approach recomputes all intersections for each scanline. The
+      <i>active edge list</i> optimization maintains only the edges currently
+      crossing the scanline and updates them incrementally as <i>y</i>
+      advances, reducing the work per scanline from O(<i>n</i>) to O(<i>k</i>)
+      where <i>k</i> is the number of active edges.
+    </p>
+
+    <h2>Part III &mdash; Hardware Acceleration</h2>
+
+    <p>
+      Modern rendering engines &mdash; Chrome&rsquo;s RenderingNG, Mozilla&rsquo;s
+      WebRender &mdash; off-load rasterization to the GPU. The GPU pipeline
+      runs a <i>vertex shader</i> once per vertex (in parallel) and a
+      <i>fragment shader</i> once per pixel (in parallel). Two broad strategies
+      have emerged for vector graphics on this pipeline.
+    </p>
+
+    <p>
+      <b>Triangulation.</b> Approximate each shape with triangles. The fragment
+      shader is trivial &mdash; every fragment inside a triangle receives the
+      fill color. The difficulty lies in the tessellation itself, particularly
+      for curved boundaries. Curves are approximated to a fixed tolerance, which
+      breaks down at high zoom levels.
+    </p>
+
+    <p>
+      <b>Implicitization.</b> Instead of approximating, encode the curve as an
+      implicit function and evaluate it per fragment. For a circle of radius
+      <i>r</i>:
+    </p>
+
+    <pre>
+def fragment(x, y):
+    if x*x + y*y - r*r &lt;= 0:
+        return color</pre>
+
+    <p>
+      Loop and Blinn (2005) generalized this to arbitrary cubic curves using a
+      GPU-friendly implicit formulation, enabling resolution-independent
+      rendering without tessellation.
+    </p>
+
+    <p>
+      A third approach, pioneered by Nehab and Hoppe (2008) and extended by
+      Ganacim et al. (2014), works entirely in compute kernels. Each pixel
+      independently computes its winding number by iterating over all relevant
+      curve segments and accumulating signed crossings. Acceleration structures
+      &mdash; regular spatial grids or shortcut trees &mdash; prune the set of
+      candidate curves per pixel. An additional tiling pass precomputes the
+      winding parity of each tile from its boundary alone, allowing most pixels
+      within a tile to skip the curve iteration entirely.
+    </p>
+
+    <p>
+      NVIDIA&rsquo;s NV_path_rendering (NVPR) exposes path rendering as a
+      first-class GPU API, using stencil-buffer operations to accumulate winding
+      numbers and cover passes to fill resolved pixels.
+    </p>
+
+    <h2>Part IV &mdash; Signal Processing and Further Connections</h2>
+
+    <p>
+      Rasterization is sampling. A rasterizer converts a continuous 2D signal
+      (the filled shape) to discrete pixel values at a finite sampling
+      frequency. The Nyquist&ndash;Shannon theorem applies: if the spatial
+      frequency of the shape boundary exceeds half the pixel density, aliasing
+      results. The standard remedy is bandlimiting &mdash; blurring the signal
+      before sampling &mdash; which in the rasterization context means
+      computing anti-aliased coverage rather than a binary inside/outside value.
+    </p>
+
+    <p>
+      A more recent connection is to <i>differentiable rendering</i>. Li et
+      al. (2020) show how to propagate gradients through a rasterizer, enabling
+      vector graphics to be optimized by gradient descent. The key challenge is
+      that the rasterization function is discontinuous at shape boundaries;
+      automatic differentiation handles the smooth interior but requires special
+      treatment at the boundary.
+    </p>
+
+    <h2>References</h2>
+
+    <ul>
+      <li>
+        Charles Loop and Jim Blinn. 2005. Resolution independent curve
+        rendering using programmable graphics hardware. <i>ACM Trans. Graph.</i>
+        24, 3, 1000&ndash;1009.
+        <a href="https://doi.org/10.1145/1073204.1073303">doi:10.1145/1073204.1073303</a>
+      </li>
+      <li>
+        Diego Nehab and Hugues Hoppe. 2008. Random-access rendering of general
+        vector graphics. <i>ACM SIGGRAPH Asia 2008</i>, Article 135.
+        <a href="https://doi.org/10.1145/1457515.1409088">doi:10.1145/1457515.1409088</a>
+      </li>
+      <li>
+        Francisco Ganacim, Rodolfo S. Lima, Luiz Henrique de Figueiredo, and
+        Diego Nehab. 2014. Massively-parallel vector graphics.
+        <i>ACM Trans. Graph.</i> 33, 6, Article 229.
+        <a href="https://doi.org/10.1145/2661229.2661274">doi:10.1145/2661229.2661274</a>
+      </li>
+      <li>
+        Mark J. Kilgard and Jeff Bolz. 2012. GPU-accelerated path rendering.
+        <i>ACM Trans. Graph.</i> 31, 6, Article 172.
+        <a href="https://doi.org/10.1145/2366145.2366191">doi:10.1145/2366145.2366191</a>
+      </li>
+      <li>
+        Rui Li, Qiming Hou, and Kun Zhou. 2016. Efficient GPU path rendering
+        using scanline rasterization. <i>ACM Trans. Graph.</i> 35, 6, Article 228.
+        <a href="https://doi.org/10.1145/2980179.2982434">doi:10.1145/2980179.2982434</a>
+      </li>
+      <li>
+        Tzu-Mao Li, Michal Luk&aacute;&ccaron;, Micha&euml;l Gharbi, and
+        Jonathan Ragan-Kelley. 2020. Differentiable vector graphics rasterization
+        for editing and learning. <i>ACM Trans. Graph.</i> 39, 6, Article 193.
+        <a href="https://doi.org/10.1145/3414685.3417871">doi:10.1145/3414685.3417871</a>
+      </li>
+      <li>
+        Kaspar Fischer. 2000. Piecewise Linear Approximation of Bezier Curves.
+        <a href="https://hcklbrrfnn.wordpress.com/wp-content/uploads/2012/08/bez.pdf">PDF</a>
+      </li>
+    </ul>
+
+    <h2>Further Reading</h2>
+
+    <ul>
+      <li>Raph Levien: <a href="https://raphlinus.github.io">raphlinus.github.io</a></li>
+      <li>Nicolas Silva: <a href="https://nical.github.io">nical.github.io</a></li>
+      <li>Patrick Walton: <a href="https://pcwalton.github.io">pcwalton.github.io</a></li>
+    </ul>
+
+  </body>
+</html>
