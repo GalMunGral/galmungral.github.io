@@ -1,0 +1,458 @@
+<head>
+  <title>Graphical User Interfaces: First Principles</title>
+  <meta name="viewport" content="initial-scale=1, user-scalable=no" />
+  <style>
+    body { max-width: 640px; margin: 2rem auto; overflow-x: hidden; }
+    pre { overflow: scroll; }
+    input { width: 200px; }
+    input[type="number"] { width: 50px; margin-right: 10px; }
+    label { color: gray; font-size: 0.75em; }
+    canvas {
+      user-select: none;
+      display: block;
+      width: 100%;
+      height: 200px;
+      box-shadow: 0 0 5px lightgray;
+      margin: 20px auto;
+      touch-action: none;
+    }
+    #gpu { box-shadow: none; }
+    #glass { width: 640px; height: 400px; }
+    .interactive { position: relative; margin: 20px 0; }
+    .interactive:hover .prompt { opacity: 0; }
+    .prompt {
+      color: gray;
+      opacity: 0.9;
+      transition: 0.5s all;
+      position: absolute;
+      left: 0; right: 0; top: 0; bottom: 0;
+      padding: 20px 40px;
+      pointer-events: none;
+      font-style: italic;
+      background: white;
+    }
+  </style>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script
+    async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+  ></script>
+</head>
+
+<body>
+  <h1>Graphical User Interfaces: First Principles</h1>
+
+<p>
+    How exactly does a computer
+    <em>compute</em> a vector-based graphical user interface into existence? How
+    do vivid visual metaphors arise algorithmically from the first principles of
+    logic and arithmetic? This (incomplete) article is my first attempt at a
+    coherent answer to these questions in a way as concise as possible.
+  </p>
+
+  <h2>Event Loop</h2>
+
+  <p>The interactivity of GUIs comes from its event loop:</p>
+
+  <blockquote>
+    <pre>
+while !quit
+  if event = poll(): handle(event) # input
+  if dirty: draw()                 # output
+</pre
+    >
+  </blockquote>
+  In each iteration, the program processes inputs and generates outputs:
+  <blockquote>
+    <pre>
+fn handle(event):
+  target = pick(event.xy)      # <-- input, state
+  target.handle(event)         # --> state
+
+fn draw():
+  for each geometry on screen: # <-- state
+    draw(geometry)             # --> output, state
+</pre
+    >
+  </blockquote>
+  <p>
+    These two steps are are interconnected like yin and yang &mdash; picking an
+    event handling object selects a code path for program state updates and
+    affects the geometries output by
+    <code>draw()</code>. The updated arrangement of these geometries, in turn,
+    dictates the behavior of <code>pick(event.xy)</code> in the next iteration.
+  </p>
+
+  <h2>Closed Curves</h2>
+  <p>
+    At the core of 2D vector graphics is the mathematical concept of
+    <em>"the interior of closed curves"</em>, e.g. circles and rectangles. We've
+    all learned how to fill the interior of a rectangle with a nested loop:
+  </p>
+  <blockquote>
+    <pre>
+fn draw(rect):
+  for y in rect.y1...rect.y2:
+    for x in rect.x1...rect.x2:
+      rect.color(x, y)
+</pre
+    >
+  </blockquote>
+  <p>
+    This idea can be generalized to all closed curves. The only difference is
+    that the horizontal scan line at each \(y\) could potentially enter and
+    leave the interior of the curve multiple times, resulting in multiple
+    intervals to be filled:
+  </p>
+  <blockquote>
+    <pre>
+fn draw(curve):
+  for y in curve.y1...curve.y2:
+    for x1, x2 in curve.intervals(y):
+      for x in x1...x2:
+        curve.color(x, y)
+</pre
+    >
+  </blockquote>
+  <p>
+    We can implement <code>pick(event.xy)</code> using the same logic: If a
+    point at \((x,y)\) lies in the interior of a curve, \(x\) must be in the
+    middle of one of the horizontal intervals at \(y\), so there must be an odd
+    number of intersections on either side in the \(x\) direction. This
+    hit-detection is known as the <em>"even-odd rule"</em>. We could also apply
+    the <em>"non-zero winding rule"</em>, which I will not get into here.
+  </p>
+
+  <h2>Polygons</h2>
+
+  <p>
+    How do we find <code>curve.intervals(y)</code> for an arbitrary
+    parameterized closed curve? To answer this question, let's first look at a
+    simple case: polygons. For polygons, our problem becomes much more
+    tractable: We just need to find all <em>line segments</em> intersecting the
+    scan line.
+  </p>
+  <p>
+    Given a line segment between \((x_1,y_1)\) and \((x_2, y_2)\), where \(y_1 <
+    y_2\), we know a scan line at \(y\) can only cross the line segment if \(y_1
+    \leq y < y_2\), in which case $$k=\frac{x_2-x_1}{y_2-y_1}, \quad
+    intersection=\left(x_1 + k(y-y_1), y\right).$$
+  </p>
+  <p>Here is the complete scan-line rasterization algorithm:</p>
+  <blockquote>
+    <em
+      >Keep track of the set of edges intersecting the scan line, along with
+      their respective intersection points. In each iteration:
+      <ol>
+        <li>Traverse each interval at current \(y\) and color each pixel.</li>
+        <li>Increment \(y\), then:</li>
+        <ol>
+          <li>Discard edges that no longer intersect the scan line.</li>
+          <li>Increment each intersection point \(p\) by \((k_p, 1)\).</li>
+          <li>Add new edges that begin to intersect the scan line.</li>
+        </ol>
+      </ol>
+    </em>
+  </blockquote>
+
+  <div class="interactive">
+    <div class="prompt">
+      <p>This canvas implements the rasterization algorithm described above.</p>
+      <p>Click on the canvas to place your vertices. You'll need at least 3.</p>
+    </div>
+    <canvas id="polygon"></canvas>
+    <script type="module" src="./demo/polygon.js"></script>
+  </div>
+
+  <h2>Transformations</h2>
+  <p>
+    To move and morph our polygons, we need to apply linear transformations.
+    Since a polygon is defined by its vertices, we just need to transform each
+    vertex before rasterization.
+  </p>
+  <p>
+    Strictly speaking, the transformations are linear only if we use
+    <em>homogeneous coordinates</em> \((wx, wy, w) \in \mathbb{RP}^2\) in the
+    <em>projective space</em> to represent \((x,y) \in \mathbb{R}^2 \) in
+    Euclidean space. The advantage of this framework is that 2D translation,
+    rotation and scaling are all represented as composable \(3\times3\)
+    matrices: $$T_{x,y} = \begin{pmatrix} 1 & 0 & x \\ 0 & 1 & y \\ 0 & 0 & 1
+    \end{pmatrix},\ R_{\theta} = \begin{pmatrix} \cos\theta & -\sin\theta & 0 \\
+    \sin\theta & \cos\theta & 0 \\ 0 & 0 & 1 \end{pmatrix},\ S_{c} =
+    \begin{pmatrix} c & 0 & 0 \\ 0 & c & 0 \\ 0 & 0 & 1 \end{pmatrix}.$$ This is
+    how CSS <code>transform</code> works under the hood.
+  </p>
+
+  <div class="interactive">
+    <div class="prompt">
+      <p>Drag the square to see composed transformations in action!</p>
+    </div>
+    <canvas id="transform"></canvas>
+    <script type="module" src="./demo/transform.js"></script>
+  </div>
+
+  <h2>Discretization</h2>
+  <p>
+    Now that we've handled the case of polygons, there is an obvious solution to
+    finding <code>curve.intervals(y)</code>: We can convert any curve into a
+    polygon by discrete sampling! Increasing sampling rate would give us better
+    results, and eventually a polygon would be indistinguishable from a smooth
+    curve when line segments become subpixel.
+  </p>
+  <p>
+    Let's take elliptic arcs as a non-trivial example. Suppose we want to draw
+    an arc from angle \(\phi_1\) to \(\phi_2\) on a ellipse with semi-major axis
+    \(a\) and semi-minor axis \(b\), centered at \((x,y)\) and rotated by an
+    angle \(\theta\). We can sample \(N + 1\) points: $$\Delta\phi =
+    \frac{\phi_2 - \phi_1}{N}, \quad \begin{pmatrix}x_i\\y_i\end{pmatrix} =
+    T_{x,y} R_{\theta} \begin{pmatrix}a\cos\left(\phi_1 + i\Delta\phi\right)\\
+    b\sin\left(\phi_1 + i\Delta\phi\right)\end{pmatrix}$$
+  </p>
+
+  <div class="interactive">
+    <div class="prompt">
+      <p>
+        You can smooth out this curve by increasing the sampling rate \(N\)!
+      </p>
+    </div>
+    <canvas id="ellipse"></canvas>
+  </div>
+  <div>
+    <label>\(N\)</label>
+    <input id="ellipse-n" type="number" value="8" min="3" />
+    <label>\(a\)</label> <input id="ellipse-a" type="number" value="150" />
+    <label>\(b\)</label> <input id="ellipse-b" type="number" value="150" />
+    <label>\(\theta\)</label>
+    <input id="ellipse-theta" type="number" value="0" />
+    <label>\(\phi_1\)</label>
+    <input id="ellipse-phi-1" type="number" value="15" />
+    <label>\(\phi_2\)</label>
+    <input id="ellipse-phi-2" type="number" value="345" />
+  </div>
+  <script type="module" src="./demo/ellipse.js"></script>
+
+  <h2>Stroking</h2>
+  <p>
+    Ellipses are not just interesting in their own right &mdash; thick curves,
+    which are conceptually 1D but in fact 2D for practical purposes, could be
+    rendered by drawing a sequence of skinny rectangles joined by circles, which
+    are, of course, a special case of ellipses!
+  </p>
+
+  <div class="interactive">
+    <div class="prompt">
+      <p>Try writing with your mouse/trackpad on this canvas.</p>
+      <p>Can you spot the circles and rectangles?</p>
+    </div>
+    <canvas id="curve"></canvas>
+  </div>
+  <div>
+    <label>line width </label>
+    <input id="line-width" type="number" min="1" value="4" />
+  </div>
+  <script type="module" src="demo/curve.js"></script>
+
+  <h2>Color Gradients</h2>
+
+  <p>
+    Before we transition to text rendering, let's take a brief detour and take a
+    look at color gradients! Suppose we want the color to change from \(C_1\) to
+    \(C_2\). All we need to do is to
+    <em>"linearly interpolate"</em> &mdash; i.e., to calculate a weighted
+    average of &mdash; the two colors at each pixel: $$interpolate(C_1, C_2, t)
+    = (1-t) \cdot C_1 + t \cdot C_2,$$ where the parameter \(t\) varies with
+    some sort of distance metric across pixels.
+  </p>
+
+  <div class="interactive">
+    <div class="prompt">
+      <p>
+        Take a look at these examples: $$t_{radial} = \frac{\sqrt{(x-x_o)^2 +
+        (y-y_o)^2}}{r}, \quad t_{linear} = \frac{y - y_{min}}{y_{max} -
+        y_{min}}$$
+      </p>
+    </div>
+    <canvas id="gradient"></canvas>
+  </div>
+  <div>
+    <input id="gradient-color-1" type="color" value="#eeeeee" />
+    <input id="gradient-color-2" type="color" value="#000000" />
+  </div>
+  <script type="module" src="./demo/gradient.js"></script>
+
+  <h2>Bézier Curves</h2>
+  <p>
+    Interestingly, applying linear interpolation on positions recursively based
+    on the same \(t\) parameter at every level produces the so-called
+    <em>"Bézier curves"</em>.
+  </p>
+  <p>
+    Given control points \(p^{(0)}_0, p^{(0)}_1, \dots p^{(0)}_n\), we could
+    sample a Bézier curve \(B(t)\) at \(t\) iteratively using the
+    <em>De Casteljau's algorithm</em>:
+  </p>
+  <blockquote>
+    <em>
+      In each iteration \(k \in [1, n]\), for each \(i \in [0, n - k]\):
+      $$p^{(k)}_i = (1-t) \cdot p^{(k-1)}_i + t \cdot p^{(k-1)}_{i+1}$$ Finally,
+      \(B(t) := p^{(n)}_0\)</em
+    >
+  </blockquote>
+
+  <div class="interactive">
+    <div class="prompt">
+      <p>
+        Click on this canvas to place your control points for the Bézier curve.
+      </p>
+    </div>
+
+    <canvas id="animation"></canvas>
+    <script type="module" src="./demo/animation.js"></script>
+  </div>
+
+  <h2>Fonts</h2>
+  <p>
+    In case you haven't guessed it by now, every single letter you are reading
+    on this page at this moment &mdash; or indeed, any text that uses
+    OpenType/TrueType fonts &mdash; is made of nothing but linear (lines
+    segments), quadratic and cubic Bézier curves!
+  </p>
+
+  <div class="interactive">
+    <div class="prompt">
+      <p>
+        The text on this canvas is rendered using the same JavaScript
+        implementation of the scan-line rasterization algorithm as well as the
+        discretization trick we discussed earlier.
+      </p>
+    </div>
+    <canvas id="font"></canvas>
+  </div>
+  <div>
+    <label>font (OTF/TTF): </label>
+    <input id="font-file" type="file" accept=".otf,.ttf" />
+    <label>size </label>
+    <input id="font-size" type="number" step="1" value="40" />
+  </div>
+  <script type="module" src="./demo/font.js"></script>
+
+  <h2>View Tree</h2>
+  <p>Let's put everything together.</p>
+  <p>
+    A GUI mainly consists of a containment hierarchy of geometries, which are
+    best represented as a <em>tree</em>. Visually, containers are placed beneath
+    the things they contain, so nodes closer to the root must be drawn first. In
+    other words, we should perform a <em>pre-order traversal</em>:
+  </p>
+  <blockquote>
+    <pre>
+fn drawView(parent):
+  for curve in parent.curves:
+    draw(curve)
+  for child in parent.children:
+    drawView(child)
+</pre
+    >
+  </blockquote>
+
+  <p>
+    Hit-detection is straightforward if we record the polygons in their draw
+    order. We can simply do a linear search
+    <em>backwards</em> for the last drawn &mdash; and therefore topmost &mdash;
+    polygon containing the cursor position.
+  </p>
+
+  <div class="interactive">
+    <div class="prompt">
+      <p>These buttons are handmade from raw pixels!</p>
+      <p>
+        You can adjust the border radius to test the hit-detection mechanism.
+      </p>
+    </div>
+    <canvas id="recursion"></canvas>
+  </div>
+  <div>
+    <label>border radius </label>
+    <input id="button-radius" type="number" min="0" max="100" />
+  </div>
+  <script type="module" src="./demo/composition.js"></script>
+
+  <h2>Alpha Blending</h2>
+  <p>
+    Within a view tree, geometries overlap and obscure each other. If for
+    aesthetic reasons we want to see through a layer, we need to blend it with
+    the underlying layers. To do so, instead of overwriting each pixel when
+    drawing, we need to calculate a weighted average of the existing color
+    \((r_2,g_2,b_2)\) at each pixel and the new color \((r_1,g_1,b_1)\) to be
+    painted over it. The weight for each of the two colors is determined by its
+    contribution to the <em>alpha</em> channel: $$a = a_1 + a_2 (1-a_1)$$
+    $$(r,g,b) = \frac{a_1}{a}(r_1,g_1,b_1) + \frac{a_2(1-a_1)}{a}(r_2,g_2,b_2)$$
+  </p>
+  <p>This is known as the <em>"over operator"</em>.</p>
+
+  <div class="interactive">
+    <div class="prompt">
+      <p>
+        Are you able to identify the stacking order of these transparent layers?
+      </p>
+      <p>You can increase the opacity to verify your answer!</p>
+    </div>
+    <canvas id="alpha-compositing"></canvas>
+  </div>
+  <div>
+    <label>alpha </label>
+    <input id="alpha" type="number" min="0.1" max="1" value="0.2" step="0.1" />
+  </div>
+  <script type="module" src="./demo/alpha.js"></script>
+
+  <h2>Filtering</h2>
+  <p>
+    If we want to clearly distinguish transparent layers, we could apply a
+    blurring post-processing effect. To do so, we need to
+    <em>"convolve"</em> the image with a <em>"kernel"</em> &mdash; that sounds
+    rather highbrow, but it just means a weighted average (again!) of the
+    neighborhood surrounding each pixel. The weights are given by a function
+    \(G(u,v)\) called the "kernel": $$C = \sum_{u=-k}^{k}
+    \sum_{v=-k}^{k}G(u,v)$$ $$Output(x,y) = \frac{1}{C}\sum_{u=-k}^{k}
+    \sum_{v=-k}^{k} G(u,v) \cdot Input(x-u, y-v).$$
+  </p>
+  <p>
+    For blurring we usually use (a discrete version of) the 2D Gaussian function
+    $$G(x,y) =
+    \frac{1}{2\pi\sigma^2}\exp\left(-\frac{x^2+y^2}{2\sigma^2}\right).$$ This
+    effect is called
+    <em>"Gaussian blur"</em>.
+  </p>
+
+  <div class="interactive">
+    <div class="prompt">
+      <p>Drag the lens across the image to see Gaussian blur in action!</p>
+      <p>The blur effect is written in JavaScript and performed on the CPU.</p>
+    </div>
+    <canvas id="glass"></canvas>
+  </div>
+  <div>
+    <label>sigma </label>
+    <input id="sigma" type="number" min="1" max="8" value="5" step="1" />
+  </div>
+  <script type="module" src="./demo/glass.js"></script>
+
+  <h2>Hardware Acceleration</h2>
+  <p>
+    So far, we've been iterating through a lot of pixels for every single frame!
+    One glaring problem (among several others) with this naïve approach is that
+    it doesn't scale well with higher screen resolutions. Fortunately, for many
+    of the steps above, we can actually process pixels
+    <em>in parallel</em> &mdash;
+  </p>
+
+  <div class="interactive">
+    <div class="prompt">
+      <p>This text is being rendered as triangles on the GPU.</p>
+      <p>In each frame, a random triangulation is performed on the CPU.</p>
+    </div>
+    <canvas id="gpu"></canvas>
+    <script type="module" src="./demo/gpu.js"></script>
+  </div>
+</body>
