@@ -34,56 +34,90 @@
     </p>
 
     <p>
-      A vector graphics renderer takes a list of shapes &mdash; each defined by
-      curves and a fill rule &mdash; and produces a pixel buffer. The problem
-      looks deceptively simple. In practice it spans a surprisingly wide slice
-      of computer science: computational geometry, numerical algorithms, GPU
-      architecture, and signal processing. This is an algorithmic tour from
-      first principles to the state of the art.
+      A vector graphics renderer takes a list of shapes and produces a pixel
+      buffer &mdash; a table whose rows are pixels and whose columns are shapes,
+      with each cell holding a coverage value. The problem looks deceptively
+      simple. In practice it spans a surprisingly wide slice of computer
+      science: computational geometry, numerical algorithms, GPU architecture,
+      and signal processing. This is an algorithmic tour from first principles
+      to the state of the art.
     </p>
 
-    <h2>Part I &mdash; The Inside-Outside Test</h2>
+    <h2>Part I &mdash; Winding Number of Cubic Splines</h2>
+
+    <h3>Inside-Outside Test</h3>
 
     <p>
       The fundamental question in vector rasterization is: given a closed curve
       and a point, is the point inside or outside? The standard answer is the
       <i>winding number</i> &mdash; the number of times the curve wraps
-      counterclockwise around the point. Formally, for a closed curve
-      &gamma; and a point <i>p</i>,
+      counterclockwise around the point. For a closed curve \(\gamma\) and a
+      point \(p = (x_p, y_p)\):
     </p>
 
-    $$w(\gamma, p) = \frac{1}{2\pi} \oint d\theta$$
+    $$w(\gamma, p) = \frac{1}{2\pi} \oint_\gamma \frac{(x - x_p)\,dy - (y - y_p)\,dx}{(x - x_p)^2 + (y - y_p)^2}$$
 
     <p>
       Two fill rules are in common use. The <i>non-zero rule</i> considers a
-      point inside if the winding number is non-zero; the <i>even-odd rule</i>
-      considers it inside if the winding number is odd. They agree whenever the
-      curve has no self-intersections.
+      point inside if \(w \ne 0\); the <i>even-odd rule</i> if
+      \(w \bmod 2 \ne 0\). They agree whenever the curve has no
+      self-intersections.
     </p>
 
+    <h3>Implementation</h3>
+
     <p>
-      To implement this for curves defined by cubic polynomial segments, we
-      count signed crossings of a ray cast from the point. Each crossing
-      contributes +1 or &minus;1 depending on the direction of travel. Finding
-      the crossings requires solving for the roots of a cubic polynomial &mdash;
-      the <i>t</i> values where the curve crosses the ray &mdash; which can be
-      done analytically or by a robust numerical method.
+      In practice, curves are composed of cubic polynomial segments
+      \(\gamma_i\):
     </p>
+
+    $$x_i(t) = a_1 t^3 + b_1 t^2 + c_1 t + d_1, \quad y_i(t) = a_2 t^3 + b_2 t^2 + c_2 t + d_2$$
+
+    <p>
+      To compute the winding number, cast a ray leftward from \(p\) and count
+      signed crossings. Solve \(y_i(t) = y_p\) for roots \(t_{ij}\), then sum
+      the sign of each crossing that lies to the left of \(p\):
+    </p>
+
+    $$w(\gamma, p) = \sum_{\substack{(i,j) \\ 0 \le t_{ij} < 1 \\ x_i(t_{ij}) < x_p}} -\operatorname{sgn}(y_i'(t_{ij}))$$
 
     <h2>Part II &mdash; Software Rasterization</h2>
 
+    <h3>B&eacute;zier Curves</h3>
+
     <p>
-      In practice, the curves are B&eacute;zier curves. A cubic B&eacute;zier
-      is defined by four control points <i>p</i><sub>0</sub>,&hellip;,<i>p</i><sub>3</sub>
-      and parameterized using the Bernstein basis:
+      In practice the curve segments are B&eacute;zier curves. In the
+      <i>standard (power) basis</i>, a cubic is just a cubic polynomial:
     </p>
 
-    $$B(t) = (1-t)^3 p_0 + 3t(1-t)^2 p_1 + 3t^2(1-t)\, p_2 + t^3 p_3$$
+    $$x(t) = a_1 t^3 + b_1 t^2 + c_1 t + d_1, \quad y(t) = a_2 t^3 + b_2 t^2 + c_2 t + d_2$$
 
     <p>
-      The most elegant algorithm for evaluating this is <i>de Casteljau&rsquo;s
-      algorithm</i>, which replaces the polynomial with repeated linear
-      interpolation:
+      The more useful representation is the <i>Bernstein basis</i>. The degree-\(n\)
+      Bernstein polynomials are:
+    </p>
+
+    $$b_{i,n}(t) = \binom{n}{i} t^i (1-t)^{n-i}$$
+
+    <p>
+      A cubic B&eacute;zier is then a convex combination of four control points
+      \(p_0, \ldots, p_3\):
+    </p>
+
+    $$B(t) = p_0\, b_{0,3}(t) + p_1\, b_{1,3}(t) + p_2\, b_{2,3}(t) + p_3\, b_{3,3}(t)$$
+
+    <p>
+      The Bernstein form makes geometric properties &mdash; convex hull
+      containment, endpoint interpolation, affine invariance &mdash; immediately
+      apparent.
+    </p>
+
+    <h3>De Casteljau&rsquo;s Algorithm</h3>
+
+    <p>
+      The most elegant way to evaluate a B&eacute;zier curve is
+      <i>de Casteljau&rsquo;s algorithm</i>, which replaces the polynomial with
+      repeated linear interpolation:
     </p>
 
     <pre>
@@ -93,41 +127,69 @@ def bezier(t, p0, p1, p2, p3):
     p6 = lerp(p2, p3, t)
     p7 = lerp(p4, p5, t)
     p8 = lerp(p5, p6, t)
-    return lerp(p7, p8, t)
+    p9 = lerp(p7, p8, t)
+    return p9
 
 def lerp(a, b, t):
     return (1 - t) * a + t * b</pre>
 
     <p>
-      Beyond evaluation, de Casteljau&rsquo;s algorithm also gives a clean
-      subdivision: the intermediate points at parameter <i>t</i> are the
-      control points of the two sub-curves on [0,<i>t</i>] and
-      [<i>t</i>,1]. This underlies <i>adaptive subdivision</i>, which
-      recursively splits a curve until each piece is flat enough to be
-      approximated by a line segment:
+      Beyond evaluation, the intermediate points at parameter \(t\) are the
+      control points of the two sub-curves on \([0, t]\) and \([t, 1]\). This
+      underlies <i>adaptive subdivision</i>.
+    </p>
+
+    <h3>Adaptive Subdivision</h3>
+
+    <p>
+      Adaptive subdivision recursively splits a curve until each piece is flat
+      enough to be treated as a line segment:
     </p>
 
     <pre>
-def flatten(curve):
-    if flatness(curve) &lt; eps:
-        vertices.append(curve.p3)
+def flatten(c):
+    if flatness(c) &lt; eps:
+        vertices.push(c.p3)
     else:
-        l, r = subdivide(curve)
+        l, r = subdivide(c)
         flatten(l)
         flatten(r)</pre>
 
+    <h3>Scanline Rasterization</h3>
+
     <p>
-      Once the curves are flattened to polygons, <i>scanline rasterization</i>
-      fills them. For each scanline <i>y</i>, we find all edge crossings,
-      sort them by <i>x</i>, and scan left to right, tracking the winding
-      number. Pixels between crossings where the winding number satisfies the
-      fill rule are filled:
+      Once curves are flattened to polygons, <i>scanline rasterization</i>
+      fills them. For each scanline \(y\), find all edge crossings, track the
+      winding number left to right, and fill spans where the fill rule is
+      satisfied:
+    </p>
+
+    <pre>
+def rasterize(poly, buf):
+    for y in poly.y_range:
+        xs = poly.intersect(y)
+        wn = 0
+        for i in range(len(xs) - 1):
+            wn += xs[i].sign
+            if not inside(wn): continue
+            for x in range(xs[i].x, xs[i+1].x):
+                buf[y, x] = over(poly.color(x, y), buf[y, x])</pre>
+
+    <h3>Active Edge List</h3>
+
+    <p>
+      The naive approach recomputes all intersections for each scanline. The
+      <i>active edge list</i> maintains only the edges currently crossing the
+      scanline and updates them incrementally as \(y\) advances, reducing the
+      work per scanline from \(O(n)\) to \(O(k)\) where \(k\) is the number of
+      active edges:
     </p>
 
     <pre>
 def rasterize(polygon, buf):
+    xs = []
     for y in polygon.y_range:
-        xs = polygon.intersect(y)
+        xs = update(xs, polygon.pending, y)
         wn = 0
         for i in range(len(xs) - 1):
             wn += xs[i].sign
@@ -135,85 +197,126 @@ def rasterize(polygon, buf):
             for x in range(xs[i].x, xs[i+1].x):
                 buf[y, x] = over(polygon.color(x, y), buf[y, x])</pre>
 
-    <p>
-      The naive approach recomputes all intersections for each scanline. The
-      <i>active edge list</i> optimization maintains only the edges currently
-      crossing the scanline and updates them incrementally as <i>y</i>
-      advances, reducing the work per scanline from O(<i>n</i>) to O(<i>k</i>)
-      where <i>k</i> is the number of active edges.
-    </p>
-
     <h2>Part III &mdash; Hardware Acceleration</h2>
 
     <p>
-      Modern rendering engines &mdash; Chrome&rsquo;s RenderingNG, Mozilla&rsquo;s
-      WebRender &mdash; off-load rasterization to the GPU. The GPU pipeline
-      runs a <i>vertex shader</i> once per vertex (in parallel) and a
-      <i>fragment shader</i> once per pixel (in parallel). Two broad strategies
-      have emerged for vector graphics on this pipeline.
+      Modern rendering engines &mdash; Chrome&rsquo;s RenderingNG,
+      Mozilla&rsquo;s WebRender &mdash; off-load rasterization to the GPU. The
+      pipeline proceeds as follows: the CPU uploads data and shader programs
+      over PCIe to GPU memory; a <i>vertex shader</i> transforms each vertex in
+      parallel; hardware rasterization interpolates attributes across triangles;
+      a <i>fragment shader</i> computes the final color per pixel in parallel,
+      taking interpolated vertex outputs as input; testing and blending
+      composite the results into the framebuffer.
     </p>
 
     <p>
-      <b>Triangulation.</b> Approximate each shape with triangles. The fragment
-      shader is trivial &mdash; every fragment inside a triangle receives the
-      fill color. The difficulty lies in the tessellation itself, particularly
-      for curved boundaries. Curves are approximated to a fixed tolerance, which
-      breaks down at high zoom levels.
+      Two broad strategies have emerged for vector graphics on this pipeline,
+      depending on whether one starts from shapes or from pixels.
     </p>
 
+    <h3>I. Triangulation</h3>
+
     <p>
-      <b>Implicitization.</b> Instead of approximating, encode the curve as an
-      implicit function and evaluate it per fragment. For a circle of radius
-      <i>r</i>:
+      <b>Starting from shapes.</b> Approximate each shape with triangles. The
+      fragment shader is trivial &mdash; every fragment inside a triangle
+      receives the fill color. The difficulty lies in tessellation. For a
+      circle \(x(t) = \cos t,\ y(t) = \sin t\), sample vertices
+      \((x_i, y_i) = (\cos t_i, \sin t_i)\) and fan-triangulate. Curves are
+      approximated to a fixed tolerance, which breaks down at high zoom levels.
+    </p>
+
+    <h3>II. Implicitization</h3>
+
+    <p>
+      Instead of approximating, encode the curve as an implicit function
+      evaluated per fragment. For a circle of radius \(r\),
+      \(f(x, y) = x^2 + y^2 - r^2 \le 0\):
     </p>
 
     <pre>
+# in parallel
 def fragment(x, y):
-    if x*x + y*y - r*r &lt;= 0:
+    if x * x + y * y - r * r &lt;= 0:
         return color</pre>
 
     <p>
       Loop and Blinn (2005) generalized this to arbitrary cubic curves using a
       GPU-friendly implicit formulation, enabling resolution-independent
-      rendering without tessellation.
+      rendering without tessellation. Kokojima et al. (2006) extended this to
+      deformable vector objects.
     </p>
 
-    <p>
-      A third approach, pioneered by Nehab and Hoppe (2008) and extended by
-      Ganacim et al. (2014), works entirely in compute kernels. Each pixel
-      independently computes its winding number by iterating over all relevant
-      curve segments and accumulating signed crossings. Acceleration structures
-      &mdash; regular spatial grids or shortcut trees &mdash; prune the set of
-      candidate curves per pixel. An additional tiling pass precomputes the
-      winding parity of each tile from its boundary alone, allowing most pixels
-      within a tile to skip the curve iteration entirely.
-    </p>
+    <h3>NV Path Rendering</h3>
 
     <p>
       NVIDIA&rsquo;s NV_path_rendering (NVPR) exposes path rendering as a
-      first-class GPU API, using stencil-buffer operations to accumulate winding
-      numbers and cover passes to fill resolved pixels.
+      first-class GPU API, using stencil-buffer operations to accumulate
+      winding numbers and cover passes to fill resolved pixels.
+    </p>
+
+    <h3>Compute Kernels</h3>
+
+    <p>
+      <b>Starting from pixels.</b> A third approach works entirely in compute
+      kernels. Each pixel independently computes its winding number by
+      iterating over curve segments:
+    </p>
+
+    <pre>
+# in parallel
+def pixel_kernel(x, y):
+    for c in curves:
+        compute winding number w
+        compute signed distance d
+        blend based on w, d</pre>
+
+    <p>
+      Two acceleration structures prune the candidate curves per pixel: a
+      regular spatial grid (Nehab and Hoppe, 2008) and a shortcut tree
+      (Ganacim et al., 2014).
+    </p>
+
+    <h3>Tiling</h3>
+
+    <p>
+      An additional optimization precomputes the winding parity of each tile
+      from its boundary alone, allowing most pixels within the tile to skip the
+      per-curve iteration entirely.
     </p>
 
     <h2>Part IV &mdash; Signal Processing and Further Connections</h2>
 
-    <p>
-      Rasterization is sampling. A rasterizer converts a continuous 2D signal
-      (the filled shape) to discrete pixel values at a finite sampling
-      frequency. The Nyquist&ndash;Shannon theorem applies: if the spatial
-      frequency of the shape boundary exceeds half the pixel density, aliasing
-      results. The standard remedy is bandlimiting &mdash; blurring the signal
-      before sampling &mdash; which in the rasterization context means
-      computing anti-aliased coverage rather than a binary inside/outside value.
-    </p>
+    <h3>Rasterization as Sampling</h3>
 
     <p>
-      A more recent connection is to <i>differentiable rendering</i>. Li et
-      al. (2020) show how to propagate gradients through a rasterizer, enabling
-      vector graphics to be optimized by gradient descent. The key challenge is
-      that the rasterization function is discontinuous at shape boundaries;
-      automatic differentiation handles the smooth interior but requires special
-      treatment at the boundary.
+      Rasterization is sampling: the rasterizer converts a continuous 2D signal
+      (the filled shape) to discrete pixel values at a finite sampling
+      frequency. The Nyquist&ndash;Shannon theorem applies: if the spatial
+      frequency of the shape boundary reaches half the pixel density, aliasing
+      results &mdash; for instance, tiles whose width equals half a pixel appear
+      not as stripes but as a solid color flickering between the two tile
+      colors. The remedy is bandlimiting: convolving the signal with a filter
+      \(g\) before sampling:
+    </p>
+
+    $$I(x, y;\, \Theta) = \iint_U g(u, v)\, f(x - u,\, y - v;\, \Theta)\, du\, dv$$
+
+    <p>
+      In the rasterization context this means computing anti-aliased coverage
+      rather than a binary inside/outside value.
+    </p>
+
+    <h3>Automatic Differentiation</h3>
+
+    <p>
+      The same integral formulation \(I(x, y; \Theta)\) makes differentiable
+      rendering possible. Li et al. (2020) show how to propagate gradients
+      through a rasterizer with respect to shape parameters \(\Theta\),
+      enabling vector graphics to be optimized by gradient descent. The key
+      challenge is that the rasterization function is discontinuous at shape
+      boundaries; automatic differentiation handles the smooth interior but
+      requires special treatment at edges.
     </p>
 
     <h2>References</h2>
@@ -224,6 +327,12 @@ def fragment(x, y):
         rendering using programmable graphics hardware. <i>ACM Trans. Graph.</i>
         24, 3, 1000&ndash;1009.
         <a href="https://doi.org/10.1145/1073204.1073303">doi:10.1145/1073204.1073303</a>
+      </li>
+      <li>
+        Yoshiyuki Kokojima, Kaoru Sugita, Takahiro Saito, and Takashi Takemoto.
+        2006. Resolution independent rendering of deformable vector objects
+        using graphics hardware. In <i>ACM SIGGRAPH 2006 Sketches</i>, Article 118.
+        <a href="https://doi.org/10.1145/1179849.1179997">doi:10.1145/1179849.1179997</a>
       </li>
       <li>
         Diego Nehab and Hugues Hoppe. 2008. Random-access rendering of general
