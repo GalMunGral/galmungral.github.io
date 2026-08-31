@@ -1,4 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Noto+Serif+SC:wght@400;600&family=Courier+Prime:wght@400;700&display=swap');
+/* Kaiti SC / STKaiti / KaiTi are macOS-only system fonts; LXGW WenKai is an
+   open-source Kaiti-style webfont used as a fallback so the cursive look
+   still renders on Windows/Linux and other machines without those fonts. */
+@import url('https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/lxgwwenkai-regular.css');
+@import url('https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/lxgwwenkai-bold.css');
 
 body {
   font-family: 'EB Garamond', Georgia, 'Noto Serif SC', serif;
@@ -20,7 +25,7 @@ a:hover {
 }
 
 [lang="zh"] {
-  font-family: 'Kaiti SC', 'STKaiti', 'KaiTi', 'Songti SC', 'STSong', 'SimSun', 'Noto Serif SC', 'EB Garamond', Georgia, serif;
+  font-family: 'LXGW WenKai', 'Kaiti SC', 'STKaiti', 'KaiTi', 'Songti SC', 'STSong', 'SimSun', 'Noto Serif SC', 'EB Garamond', Georgia, serif;
   font-size: 0.85em;
 }
 
@@ -29,7 +34,7 @@ a:hover {
 }
 
 body:not(.home) [lang="zh"] {
-  font-size: 1.05em;
+  font-size: 0.95em;
 }
 
 .home h1, .home h2, .home h3 {
