@@ -6,57 +6,61 @@
     <title>Writings &ndash; Wenqi He</title>
     <link rel="stylesheet" href="/style.css" />
 </head>
-  <body style="max-width: 760px; margin: 2rem auto">
-    <p><a href="/">&larr; Wenqi He</a></p>
+  <body class="writing-index">
+    <div class="essay-reader">
+      <nav class="essay-menu">
+        <p class="essay-menu-home"><a href="/">&larr; Wenqi He</a></p>
+        <p class="essay-menu-disclaimer"><small><em>Assisted by Claude (Anthropic); Chinese translations are unreviewed.<br /><span lang="zh">由 Claude 协助；翻译未经校对。</span></em></small></p>
+        <ul>
+          <li><button type="button" class="active" data-index="0"><em>On Order, Authority, and Domination</em></button></li>
+          <li><button type="button" data-index="1"><em>The Computationalist Manifesto</em></button></li>
+          <li><button type="button" data-index="2"><em>The Great Pathology</em></button></li>
+          <li><button type="button" data-index="3"><em>On Legacy</em></button></li>
+          <li><button type="button" data-index="4"><em>Critique of Research Software Engineering</em></button></li>
+          <li><button type="button" data-index="5"><em>On Software Engineering as a Career</em></button></li>
+          <li><button type="button" data-index="6"><em>Some Thoughts on AI Coding</em></button></li>
+          <li><button type="button" data-index="7"><em>Two Letters</em></button></li>
+          <li><button type="button" data-index="8"><em>2D Vector Graphics: A Survey</em></button></li>
+          <li><button type="button" data-index="9"><em>Anima Mechanismi</em></button></li>
+          <li><button type="button" data-index="10"><em>Graphical User Interfaces: First Principles</em></button></li>
+          <li><button type="button" data-index="11"><em>A Journey Through Computed Imagery</em></button></li>
+        </ul>
+      </nav>
 
-    <p>
-      <a href="ideology.html"><em>On Order, Authority, and Domination</em></a>
-      (2026)
-    </p>
-    <p>
-      <a href="stamp-collecting.html"><em>On “Software Engineering May No Longer Be a Lifetime Career”</em></a>
-      (2026)
-    </p>
-    <p>
-      <a href="two-letters.html"><em>Two Letters</em></a>
-      (2026)
-    </p>
-    <p>
-      <a href="critique.html"
-        ><em>Critique of Research Software Engineering</em></a
-      >
-      (2026)
-    </p>
-    <p>
-      <a href="on-legacy.html"><em>On Legacy</em></a> (2026)
-    </p>
-    <p>
-      <a href="the-great-pathology.html"><em>The Great Pathology</em></a> (2026)
-    </p>
-    <p>
-      <a href="ai-coding.html"><em>Some Thoughts on AI Coding</em></a> (2026)
-    </p>
-    <p>
-      <a href="manifesto.html"><em>The Computationalist Manifesto</em></a>
-      (2025)
-    </p>
-    <p>
-      <a href="anima-mechanismi.html"><em>Anima Mechanismi</em></a>
-      (2025)
-    </p>
-    <p>
-      <a href="vector-graphics.html"><em>2D Vector Graphics: A Survey</em></a>
-      (2024)
-    </p>
-    <p>
-      <a href="/gui-first-principles/"
-        ><em>Graphical User Interfaces: First Principles</em></a
-      >
-      (2023)
-    </p>
-    <p>
-      <a href="/repos/"><em>A Journey Through Computed Imagery</em></a>
-      (2020&ndash;)
-    </p>
+      <div class="essay-viewer">
+        <div class="essay-card" data-index="0"><iframe src="ideology.html" loading="lazy"></iframe></div>
+        <div class="essay-card" data-index="1"><iframe src="manifesto.html" loading="lazy"></iframe></div>
+        <div class="essay-card" data-index="2"><iframe src="the-great-pathology.html" loading="lazy"></iframe></div>
+        <div class="essay-card" data-index="3"><iframe src="on-legacy.html" loading="lazy"></iframe></div>
+        <div class="essay-card" data-index="4"><iframe src="critique.html" loading="lazy"></iframe></div>
+        <div class="essay-card" data-index="5"><iframe src="stamp-collecting.html" loading="lazy"></iframe></div>
+        <div class="essay-card" data-index="6"><iframe src="ai-coding.html" loading="lazy"></iframe></div>
+        <div class="essay-card" data-index="7"><iframe src="two-letters.html" loading="lazy"></iframe></div>
+        <div class="essay-card" data-index="8"><iframe src="vector-graphics.html" loading="lazy"></iframe></div>
+        <div class="essay-card" data-index="9"><iframe src="anima-mechanismi.html" loading="lazy"></iframe></div>
+        <div class="essay-card" data-index="10"><iframe src="https://hwenchi.github.io/gui-first-principles/" loading="lazy"></iframe></div>
+        <div class="essay-card" data-index="11"><iframe src="https://hwenchi.github.io/repos/" loading="lazy"></iframe></div>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        var menu = document.querySelector(".essay-menu");
+        var viewer = document.querySelector(".essay-viewer");
+
+        menu.addEventListener("click", function (e) {
+          var btn = e.target.closest("button[data-index]");
+          if (!btn) return;
+          var index = btn.getAttribute("data-index");
+
+          menu.querySelectorAll("button").forEach(function (b) {
+            b.classList.toggle("active", b === btn);
+          });
+
+          var card = viewer.querySelector('.essay-card[data-index="' + index + '"]');
+          if (card) card.scrollIntoView({ behavior: "smooth", inline: "start", block: "nearest" });
+        });
+      })();
+    </script>
   </body>
 </html>
