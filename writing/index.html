@@ -7,60 +7,93 @@
     <link rel="stylesheet" href="/style.css" />
 </head>
   <body class="writing-index">
+    <p class="disclaimer-banner"><em>The arguments below are original; Claude (Anthropic) assisted with some of the English prose and produced the Chinese translations, which have not been checked line by line.<br /><span lang="zh">以下论证均为原创；Claude（Anthropic）协助撰写了部分英文文字，并完成了中文翻译，译文尚未逐句核对。</span></em></p>
+
     <div class="essay-reader">
       <nav class="essay-menu">
         <p class="essay-menu-home"><a href="/">&larr; Wenqi He</a></p>
-        <p class="essay-menu-disclaimer"><small><em>Assisted by Claude (Anthropic); Chinese translations are unreviewed.<br /><span lang="zh">由 Claude 协助；翻译未经校对。</span></em></small></p>
         <ul>
-          <li><button type="button" class="active" data-index="0"><em>On Order, Authority, and Domination</em></button></li>
-          <li><button type="button" data-index="1"><em>The Computationalist Manifesto</em></button></li>
-          <li><button type="button" data-index="2"><em>The Great Pathology</em></button></li>
-          <li><button type="button" data-index="3"><em>On Legacy</em></button></li>
-          <li><button type="button" data-index="4"><em>Critique of Research Software Engineering</em></button></li>
-          <li><button type="button" data-index="5"><em>On Software Engineering as a Career</em></button></li>
-          <li><button type="button" data-index="6"><em>Some Thoughts on AI Coding</em></button></li>
-          <li><button type="button" data-index="7"><em>Two Letters</em></button></li>
-          <li><button type="button" data-index="8"><em>2D Vector Graphics: A Survey</em></button></li>
-          <li><button type="button" data-index="9"><em>Anima Mechanismi</em></button></li>
-          <li><button type="button" data-index="10"><em>Graphical User Interfaces: First Principles</em></button></li>
-          <li><button type="button" data-index="11"><em>A Journey Through Computed Imagery</em></button></li>
+          <li><button type="button" class="active" data-index="0"><em>Some Thoughts on AI Coding</em><br /><span lang="zh">关于 AI 编程的一些思考</span></button></li>
+          <li><button type="button" data-index="1"><em>On Software Engineering as a Career</em><br /><span lang="zh">论软件工程作为职业</span></button></li>
+          <li><button type="button" data-index="2"><em>The Great Pathology</em><br /><span lang="zh">顽疾</span></button></li>
+          <li><button type="button" data-index="3"><em>On Legacy</em><br /><span lang="zh">论遗留代码</span></button></li>
+          <li><button type="button" data-index="4"><em>Research Software as Rhetoric</em><br /><span lang="zh">作为修辞的研究型软件</span></button></li>
+          <li><button type="button" data-index="5"><em>RE: Research Software as Rhetoric</em><br /><span lang="zh">回复：作为修辞的研究型软件</span></button></li>
+          <li><button type="button" data-index="6"><em>The Computationalist Manifesto</em><br /><span lang="zh">计算主义宣言</span></button></li>
+          <li><button type="button" data-index="7"><em>Beneath the Interface</em><br /><span lang="zh">界面之下</span></button></li>
+          <li><button type="button" data-index="8"><em>Beneath the Interface, Revisited</em><br /><span lang="zh">界面之下（续）</span></button></li>
+          <li><button type="button" data-index="9"><em>Foundations</em><br /><span lang="zh">根基</span></button></li>
+          <li><button type="button" data-index="10"><em>On Order, Authority, and Domination</em><br /><span lang="zh">论秩序、权威与支配</span></button></li>
         </ul>
       </nav>
 
       <div class="essay-viewer">
-        <div class="essay-card" data-index="0"><iframe src="ideology.html" loading="lazy"></iframe></div>
-        <div class="essay-card" data-index="1"><iframe src="manifesto.html" loading="lazy"></iframe></div>
+        <div class="essay-card" data-index="0"><iframe src="ai-coding.html" loading="lazy"></iframe></div>
+        <div class="essay-card" data-index="1"><iframe src="stamp-collecting.html" loading="lazy"></iframe></div>
         <div class="essay-card" data-index="2"><iframe src="the-great-pathology.html" loading="lazy"></iframe></div>
         <div class="essay-card" data-index="3"><iframe src="on-legacy.html" loading="lazy"></iframe></div>
         <div class="essay-card" data-index="4"><iframe src="critique.html" loading="lazy"></iframe></div>
-        <div class="essay-card" data-index="5"><iframe src="stamp-collecting.html" loading="lazy"></iframe></div>
-        <div class="essay-card" data-index="6"><iframe src="ai-coding.html" loading="lazy"></iframe></div>
-        <div class="essay-card" data-index="7"><iframe src="two-letters.html" loading="lazy"></iframe></div>
+        <div class="essay-card" data-index="5"><iframe src="two-letters.html" loading="lazy"></iframe></div>
+        <div class="essay-card" data-index="6"><iframe src="manifesto.html" loading="lazy"></iframe></div>
+        <div class="essay-card" data-index="7"><iframe src="/gui-first-principles/" loading="lazy"></iframe></div>
         <div class="essay-card" data-index="8"><iframe src="vector-graphics.html" loading="lazy"></iframe></div>
         <div class="essay-card" data-index="9"><iframe src="anima-mechanismi.html" loading="lazy"></iframe></div>
-        <div class="essay-card" data-index="10"><iframe src="https://hwenchi.github.io/gui-first-principles/" loading="lazy"></iframe></div>
-        <div class="essay-card" data-index="11"><iframe src="https://hwenchi.github.io/repos/" loading="lazy"></iframe></div>
+        <div class="essay-card" data-index="10"><iframe src="ideology.html" loading="lazy"></iframe></div>
       </div>
     </div>
 
-    <script>
-      (function () {
-        var menu = document.querySelector(".essay-menu");
-        var viewer = document.querySelector(".essay-viewer");
+    <script type="module">
+      const menu = document.querySelector(".essay-menu");
+      const viewer = document.querySelector(".essay-viewer");
+      const cards = [...viewer.querySelectorAll(".essay-card")];
+      const buttons = [...menu.querySelectorAll("button[data-index]")];
 
-        menu.addEventListener("click", function (e) {
-          var btn = e.target.closest("button[data-index]");
-          if (!btn) return;
-          var index = btn.getAttribute("data-index");
+      const setActive = (index) => {
+        for (const b of buttons) b.classList.toggle("active", b.dataset.index === index);
+      };
 
-          menu.querySelectorAll("button").forEach(function (b) {
-            b.classList.toggle("active", b === btn);
-          });
+      menu.addEventListener("click", (e) => {
+        const btn = e.target.closest("button[data-index]");
+        if (!btn) return;
 
-          var card = viewer.querySelector('.essay-card[data-index="' + index + '"]');
-          if (card) card.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+        setActive(btn.dataset.index);
+        viewer
+          .querySelector(`.essay-card[data-index="${btn.dataset.index}"]`)
+          ?.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+
+      // Size each iframe to its own content so the essay scrolls as part of
+      // the page, not in its own nested scrollbar. All essays are
+      // same-origin, so this works without postMessage.
+      const resizeToContent = (frame) => {
+        try {
+          const doc = frame.contentDocument;
+          const height = Math.max(doc.documentElement.scrollHeight, doc.body?.scrollHeight ?? 0);
+          frame.style.height = `${height}px`;
+        } catch {
+          // cross-origin frame (shouldn't happen, but fail gracefully)
+        }
+      };
+
+      for (const frame of viewer.querySelectorAll("iframe")) {
+        frame.setAttribute("scrolling", "no");
+        frame.addEventListener("load", () => {
+          resizeToContent(frame);
+          setTimeout(() => resizeToContent(frame), 300); // fonts/images that finish late
+          setTimeout(() => resizeToContent(frame), 1200); // MathJax/KaTeX rendering that finishes later still
         });
-      })();
+      }
+
+      // Keep the active menu item in sync with whichever essay is in view.
+      const observer = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) setActive(entry.target.dataset.index);
+          }
+        },
+        { rootMargin: "-45% 0px -50% 0px", threshold: 0 }
+      );
+      for (const card of cards) observer.observe(card);
     </script>
   </body>
 </html>
