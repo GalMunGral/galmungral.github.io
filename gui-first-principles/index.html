@@ -28,10 +28,10 @@
 
   <p>
     How exactly does a computer
-    <em>compute</em> a vector-based graphical user interface into existence? How
+    <em>compute</em> a vector-based graphical user interface into being? How
     do vivid visual metaphors arise algorithmically from the first principles of
-    logic and arithmetic? This (incomplete) article is my first attempt at a
-    coherent answer to these questions in a way as concise as possible.
+    logic and arithmetic? This incomplete article is my first attempt to answer
+    those questions as concisely and coherently as possible.
   </p>
 
   <p lang="zh">
@@ -40,7 +40,7 @@
 
   <h2>Event Loop<br /><span lang="zh">事件循环</span></h2>
 
-  <p>The interactivity of GUIs comes from its event loop:</p>
+  <p>The interactivity of a GUI comes from its event loop:</p>
   <p lang="zh">图形用户界面的交互性，来自于它的事件循环：</p>
 
   <blockquote>
@@ -82,8 +82,8 @@ fn draw():
 
   <h2>Closed Curves<br /><span lang="zh">闭合曲线</span></h2>
   <p>
-    At the core of 2D vector graphics is the mathematical concept of
-    <em>"the interior of closed curves"</em>, e.g. circles and rectangles. We've
+    At the core of 2D vector graphics is the mathematical concept of the
+    <em>interior of a closed curve</em>, such as a circle or rectangle. We have
     all learned how to fill the interior of a rectangle with a nested loop:
   </p>
   <p lang="zh">
@@ -119,9 +119,9 @@ fn draw(curve):
   </blockquote>
   <p>
     We can implement <code>pick(event.xy)</code> using the same logic: If a
-    point at \((x,y)\) lies in the interior of a curve, \(x\) must be in the
-    middle of one of the horizontal intervals at \(y\), so there must be an odd
-    number of intersections on either side in the \(x\) direction. This
+    point at \((x,y)\) lies in the interior of a curve, \(x\) must fall within
+    one of the horizontal intervals at \(y\), so there must be an odd number of
+    intersections to either side along the \(x\)-axis. This
     hit-detection is known as the <em>"even-odd rule"</em>. We could also apply
     the <em>"non-zero winding rule"</em>, which I will not get into here.
   </p>
@@ -240,7 +240,7 @@ fn draw(curve):
   </p>
   <p>
     Let's take elliptic arcs as a non-trivial example. Suppose we want to draw
-    an arc from angle \(\phi_1\) to \(\phi_2\) on a ellipse with semi-major axis
+    an arc from angle \(\phi_1\) to \(\phi_2\) on an ellipse with semi-major axis
     \(a\) and semi-minor axis \(b\), centered at \((x,y)\) and rotated by an
     angle \(\theta\). We can sample \(N + 1\) points: $$\Delta\phi =
     \frac{\phi_2 - \phi_1}{N}, \quad \begin{pmatrix}x_i\\y_i\end{pmatrix} =
@@ -306,8 +306,8 @@ fn draw(curve):
     Before we transition to text rendering, let's take a brief detour and take a
     look at color gradients! Suppose we want the color to change from \(C_1\) to
     \(C_2\). All we need to do is to
-    <em>"linearly interpolate"</em> &mdash; i.e., to calculate a weighted
-    average of &mdash; the two colors at each pixel: $$interpolate(C_1, C_2, t)
+    <em>linearly interpolate</em> &mdash; that is, calculate a weighted
+    average of the two colors at each pixel: $$interpolate(C_1, C_2, t)
     = (1-t) \cdot C_1 + t \cdot C_2,$$ where the parameter \(t\) varies with
     some sort of distance metric across pixels.
   </p>
@@ -377,7 +377,7 @@ fn draw(curve):
   <p>
     In case you haven't guessed it by now, every single letter you are reading
     on this page at this moment &mdash; or indeed, any text that uses
-    OpenType/TrueType fonts &mdash; is made of nothing but linear (lines
+    OpenType/TrueType fonts &mdash; is made of nothing but linear (line
     segments), quadratic and cubic B&eacute;zier curves!
   </p>
   <p lang="zh">
@@ -388,8 +388,8 @@ fn draw(curve):
     <div class="prompt">
       <p>
         The text on this canvas is rendered using the same JavaScript
-        implementation of the scan-line rasterization algorithm as well as the
-        discretization trick we discussed earlier.
+        implementation of the scan-line rasterization algorithm, together with
+        the discretization technique we discussed earlier.
       </p>
     </div>
     <canvas id="font"></canvas>
@@ -485,12 +485,12 @@ fn drawView(parent):
 
   <h2>Filtering<br /><span lang="zh">滤波</span></h2>
   <p>
-    If we want to clearly distinguish transparent layers, we could apply a
-    blurring post-processing effect. To do so, we need to
-    <em>"convolve"</em> the image with a <em>"kernel"</em> &mdash; that sounds
+    If we want to distinguish transparent layers more clearly, we could apply a
+    blur post-processing effect. To do so, we need to
+    <em>convolve</em> the image with a <em>kernel</em> &mdash; that sounds
     rather highbrow, but it just means a weighted average (again!) of the
-    neighborhood surrounding each pixel. The weights are given by a function
-    \(G(u,v)\) called the "kernel": $$C = \sum_{u=-k}^{k}
+    neighborhood around each pixel. The weights are given by a function
+    \(G(u,v)\), called the kernel: $$C = \sum_{u=-k}^{k}
     \sum_{v=-k}^{k}G(u,v)$$ $$Output(x,y) = \frac{1}{C}\sum_{u=-k}^{k}
     \sum_{v=-k}^{k} G(u,v) \cdot Input(x-u, y-v).$$
   </p>
@@ -504,7 +504,7 @@ fn drawView(parent):
     $$G(x,y) =
     \frac{1}{2\pi\sigma^2}\exp\left(-\frac{x^2+y^2}{2\sigma^2}\right).$$ This
     effect is called
-    <em>"Gaussian blur"</em>.
+    <em>Gaussian blur</em>.
   </p>
   <p lang="zh">
     做模糊处理时，我们通常使用（离散版本的）二维高斯函数 $$G(x,y) =
@@ -526,7 +526,7 @@ fn drawView(parent):
 
   <h2>Hardware Acceleration<br /><span lang="zh">硬件加速</span></h2>
   <p>
-    So far, we've been iterating through a lot of pixels for every single frame!
+    So far, we've been iterating through a lot of pixels in every frame!
     One glaring problem (among several others) with this na&iuml;ve approach is that
     it doesn't scale well with higher screen resolutions. Fortunately, for many
     of the steps above, we can actually process pixels
