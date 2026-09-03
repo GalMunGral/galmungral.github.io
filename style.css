@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Noto+Serif+SC:wght@400;600&family=Courier+Prime:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Noto+Serif+SC:wght@400;600&family=Noto+Serif+TC:wght@400;600&family=Courier+Prime:wght@400;700&display=swap');
 /* Kaiti SC / STKaiti / KaiTi are macOS-only system fonts; LXGW WenKai is an
    open-source Kaiti-style webfont used as a fallback so the cursive look
    still renders on Windows/Linux and other machines without those fonts. */
@@ -51,6 +51,15 @@ a:hover {
 
 .home [lang="zh"] {
   font-family: 'Songti SC', 'STSong', 'SimSun', 'Noto Serif SC', 'EB Garamond', Georgia, serif;
+}
+
+/* Source Han Serif (as Noto Serif TC/SC) for all Chinese text in the writing
+   collection — Traditional Chinese glyph shapes for the essays, Simplified
+   as a fallback. */
+body.essay [lang="zh"],
+.writing-index [lang="zh"] {
+  font-family: 'Noto Serif TC', 'Noto Serif SC', 'Songti SC', 'STSong', 'SimSun', 'EB Garamond', Georgia, serif;
+  font-size: 0.88em;
 }
 
 body:not(.home) [lang="zh"] {

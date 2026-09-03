@@ -5,72 +5,81 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Preface</title>
     <link rel="stylesheet" href="/style.css" />
+    <style>
+      /* Standalone vertical, right-to-left, unpunctuated rendering — the
+         layout a pre-Qin bamboo-slip text would actually have used. This
+         departs from the normal .essay horizontal-scroll reader, so it
+         manages its own scrolling rather than inheriting body.essay. */
+      body.essay.preface {
+        max-width: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .preface-scroll {
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
+        /* Fixed px, not vh: this page is loaded in an iframe that's sized to
+           its own content after the fact, so vh here would resolve against
+           the iframe's tiny pre-resize height and get stuck small. */
+        height: 900px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding: 2rem 2.5rem;
+        box-sizing: border-box;
+        font-family: 'Noto Serif TC', 'Noto Serif SC', 'Songti SC', 'STSong', 'SimSun', serif;
+      }
+
+      .preface-scroll h1 {
+        font-size: 1.4em;
+        font-weight: 600;
+        margin: 0 0 0 1.5rem;
+        letter-spacing: 0.2em;
+      }
+
+      .preface-scroll p {
+        font-size: 1.05em;
+        line-height: 2.2;
+        letter-spacing: 0.05em;
+        margin: 0 1.5rem 0 0;
+      }
+
+      /* 句讀 marks, styled after the vermilion (硃筆) punctuation a teacher or
+         commentator would add to an unpunctuated text: a filled dot for 句
+         (sentence end) and a hollow dot for 讀 (clause pause), sitting at the
+         character's corner rather than taking up a character-width of their
+         own. */
+      .preface-scroll .ju,
+      .preface-scroll .dou {
+        position: relative;
+      }
+
+      .preface-scroll .ju::after,
+      .preface-scroll .dou::after {
+        content: "";
+        position: absolute;
+        right: -0.1em;
+        bottom: 0.05em;
+        width: 0.3em;
+        height: 0.3em;
+        border-radius: 50%;
+      }
+
+      .preface-scroll .ju::after {
+        background: #b23a2f;
+      }
+
+      .preface-scroll .dou::after {
+        background: transparent;
+        border: 1px solid #b23a2f;
+      }
+    </style>
   </head>
 
-  <body class="essay">
-    <h1>
-      Preface<br />
-      <span lang="zh">序</span>
-    </h1>
-
-    <p lang="zh">
-      夫人生於天地之間，稟命於陰陽之化。身非己之所造，才非己之所能有。萬物之生，各有其分；四時之運，莫不有常。分之所存，非人力所能移易；命之所繫，豈智巧可得更張？故稟之於天者，謂之性；定之於分者，謂之命。性不可易，命不可違，明乎此，而後可以語天人矣。
-    </p>
-
-    <p lang="zh">
-      世道不寧，則民無以遂其生；民生失所，則天下無以為治。是以學者之事，雖曰脩身，而所存必及於天下；雖曰治世，而其本實繫於人心。脩己以安百姓，此儒者之宏規；正心以平天下，乃王道之始基。未有身不脩而能治人，心不正而能正物者也。
-    </p>
-
-    <p lang="zh">
-      人之所稟，明昧殊塗，剛柔異質，才力長短，固有不同。或堪任重而致遠，或僅能守身而全生。此皆受之於天，非爵祿所能增損，非刑賞所能變遷。稟之於自然，不可強而同也；定之於分命，不可妄而移也。故智者不以所能驕人，愚者不以所不能自薄，各安其分，斯為知道。
-    </p>
-
-    <p lang="zh">
-      父子之親，長幼之序，賢不肖之分，非官府之所始；爵秩之設，官守之職，臨民之位，乃因時而立。自然之倫，出乎天性；人事之制，成乎時宜。天人之際，於是乎辨；本末之序，於是乎明。故君子謹於所當為，而不惑於其所不必為也。
-    </p>
-
-    <p lang="zh">
-      居上者，豈可恃位而自以為固然乎？令之行也，人畏其勢而從之耳。令苟違義，雖天下靡然從之，豈可謂天理之正乎？勢之所加，非心之所服；力之所制，非理之所安。故位不可以為德，勢未足以為道。德者，所以服人也；勢者，所以制人也。以德服人，則中心悅而誠服；以勢制人，則貌從而心違。是以古之明王，尚德而不尚力，貴義而不貴勢。
-    </p>
-
-    <p lang="zh">
-      制人者未必賢，受制者未必不肖。貴賤無恒，賢愚有素。徒以勢相臨，則名實乖矣；苟以理相服，則上下安矣。故君子不以其位自高，不以其勢自恃，惟問其德之修否，理之明昧而已。
-    </p>
-
-    <p lang="zh">
-      人之常情，欲尊而惡卑，樂逸而憚勞。利之所在，則趨之若騖；害之所及，則避之如仇。又樂人之屈己，以益其尊；惡己之屈人，以損其勢。法令之設，本以正心；苟非其道，反為欲資。於是法令愈密，而奸偽愈滋；刑罰愈峻，而犯者愈衆。故曰：法令者，治之具也，非治之本；刑罰者，政之末也，非政之要。
-    </p>
-
-    <p lang="zh">
-      是故無所憚而欲熾者，易乘勢以肆志；居下者習見其然，遂俯首而順命。上恃其勢以陵下，下安其卑以事上。上下相因，遂成積習；積習既久，莫覺其非。勢之所在，即以為理；分之所在，即以為常。故曰：習與性成，嚴霜堅冰，非一朝之故也。
-    </p>
-
-    <p lang="zh">
-      夫尊勢之心未除，則制人之患無窮。權柄雖移，而心術不改；名號雖更，而實質猶存。兵革之興，足以易其主，未足以易其俗；足以變其政，未足以變其心。主雖易，而嗜勢之徒復起；人雖更，而所以為害者未更。是以易姓改物，不如易俗移風；革故鼎新，莫若革心易行。
-    </p>
-
-    <p lang="zh">
-      故去其一柄，而心術不變，則必有所假託。或託於名，或託於義。名義雖殊，制人之實一也。名者，實之賓也；義者，利之飾也。苟無其實，則名無所附；苟非其義，則言無所立。是以古之聖人，不務虛名而求實效，不尚空言而貴實行。
-    </p>
-
-    <p lang="zh">
-      欲息其患，豈在屢更其制、數變其令哉？正其心而已，厚其俗而已。廉恥立，則勢不能肆；義理明，則名不能欺。本立而道生，源清而流潔。此其所以為本也。故君子務本，本立而末自舉；聖人重德，德盛而化自行。
-    </p>
-
-    <p lang="zh">
-      夫人之欲上人，亦其性之所有，不可一概抑之。抑之不得其道，則其志反屈。志屈則安於卑下，隨俗而流；畏權門之威，信妄人之說；乃至淫祀之惑，靡所不至。故善導之，則爭心化為志氣；不善抑之，則意氣轉為頹靡。是以教之為道，如治水然，因其勢而利導之，則不為害而反為利矣。
-    </p>
-
-    <p lang="zh">
-      善為教者，非去其爭心也，因而善導之。使之爭於理，爭於言，爭於功業，爭於藝，而不爭於人；求勝於己，而不求勝於人。其氣有所用，則不至於陵物；其志有所歸，則不至於肆欲。爭心雖存，而所爭者大；勝心未泯，而所求者高。故曰：君子無所爭，必也射乎！揖讓而升，下而飲，其爭也君子。
-    </p>
-
-    <p lang="zh">
-      人有所創為，則知其才非自有；觀乎形質，則知其所受；察乎萬物，則知萬物先我而有，非我所能致。知所受，則不敢自私其有；知有所先，則不敢自大其智。是以所能愈施，而自處愈謙；所知愈廣，而自視愈卑。謙以受益，卑以自牧，此君子所以日進也。
-    </p>
-
-    <p lang="zh">
-      夫稟受之殊，天也，非可以強一。所患者，恃勢以陵人，習卑以自安耳。上以勢陵下，下習卑以自安；上下相因，因循而不知其非。久而勢之所行，遂以為理；人之所制，遂以為常。積習既深，天理人事幾不可復辨。天理不明，人事失正，則民無所遂其生，天下無所措其治。故明分定分，所以辨天人之際；正心厚俗，所以立治化之基。此學者所當深察而力行之者也。
-    </p>
+  <body class="essay preface">
+    <div class="preface-scroll">
+      <h1>序</h1>
+      <p>天生蒸<span class="dou">民</span>莫不有<span class="ju">性</span>性之所<span class="dou">受</span>各有所<span class="ju">宜</span>體有厚<span class="dou">薄</span>氣有強<span class="dou">弱</span>材有長<span class="dou">短</span>力有強<span class="ju">弱</span>然天之始生民<span class="dou">也</span>初無貴賤之<span class="ju">分</span>夫人之<span class="dou">情</span>欲貴而惡<span class="dou">賤</span>欲勝而惡<span class="ju">屈</span>故力足者陵<span class="dou">人</span>力不足者事<span class="ju">人</span>上下相<span class="dou">倚</span>久而安<span class="ju">之</span>久而安<span class="dou">之</span>遂以為<span class="ju">性</span>處下者<span class="ju">曰</span>吾固宜<span class="ju">然</span>居上者<span class="ju">曰</span>吾固當<span class="ju">然</span>豈天性然<span class="ju">哉</span>習之使然<span class="ju">也</span>夫天人之<span class="ju">分</span>天<span class="dou">者</span>生之者<span class="ju">也</span>人<span class="dou">者</span>偽之者<span class="ju">也</span>生者不可<span class="dou">易</span>偽者可<span class="ju">變</span>名<span class="dou">者</span>人之所命<span class="ju">也</span>法<span class="dou">者</span>人之所立<span class="ju">也</span>勢<span class="dou">者</span>人之所成<span class="ju">也</span>世異則法<span class="dou">移</span>法移則名<span class="ju">變</span>今混人之所偽而謂之天<span class="dou">生</span>混人之所習而謂之天<span class="dou">命</span>是以人亂<span class="dou">天</span>而失其分<span class="ju">也</span>且人之欲<span class="dou">勝</span>亦性之固存<span class="ju">也</span>然勝人<span class="dou">者</span>非勝之道極<span class="ju">也</span>勝於<span class="dou">事</span>勝於<span class="dou">藝</span>勝於<span class="dou">言</span>勝於<span class="dou">難</span>咸謂之<span class="ju">勝</span>使人之欲得其<span class="dou">施</span>則其志有所<span class="ju">立</span>志立則知其<span class="dou">能</span>知其能則知其所不<span class="ju">能</span>此所以進<span class="ju">也</span>故欲不可<span class="dou">絕</span>亦不可<span class="ju">縱</span>絕之則<span class="dou">屈</span>縱之則<span class="ju">亂</span>因其勢而導<span class="dou">之</span>成其材而節其<span class="dou">欲</span>則各得其性<span class="ju">矣</span>人久處其<span class="dou">位</span>則尊卑之名錮於<span class="ju">心</span>久習其<span class="dou">事</span>則以人為者疑為天<span class="ju">成</span>是以易其名而心不<span class="dou">革</span>改其法而習不<span class="ju">移</span>雖更其<span class="dou">跡</span>其蔽一<span class="ju">也</span>是故天之所<span class="dou">生</span>不可輕<span class="ju">也</span>人之所<span class="dou">為</span>不可神<span class="ju">也</span>可敬者敬<span class="dou">之</span>可疑者察<span class="dou">之</span>可改者矯<span class="ju">之</span>名不勝<span class="dou">實</span>勢不勝<span class="dou">德</span>習不勝<span class="ju">性</span>故處下者不以卑自<span class="dou">誣</span>居上者不以貴自<span class="ju">矜</span>各求其<span class="dou">實</span>各得其<span class="dou">性</span>而天下治<span class="ju">矣</span></p>
+    </div>
   </body>
 </html>
