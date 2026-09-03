@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Preface</title>
+    <link rel="stylesheet" href="/style.css" />
+    <style>
+      /* Standalone vertical, right-to-left, unpunctuated rendering — the
+         layout a pre-Qin bamboo-slip text would actually have used. This
+         departs from the normal .essay horizontal-scroll reader, so it
+         manages its own scrolling rather than inheriting body.essay. */
+      body.essay.preface {
+        max-width: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .preface-scroll {
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
+        /* The card this loads into is sized to the real viewport (not a
+           tiny pre-resize height), so 100vh resolves correctly here. */
+        height: 100vh;
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding: 2rem 1.25rem;
+        box-sizing: border-box;
+        font-family: 'Noto Serif TC', 'Noto Serif SC', 'Songti SC', 'STSong', 'SimSun', serif;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+      }
+
+      .preface-scroll::-webkit-scrollbar {
+        display: none;
+      }
+
+      .preface-scroll h1 {
+        font-size: 1.4em;
+        font-weight: 600;
+        margin: 0 0.8rem 0 0;
+        letter-spacing: 0.2em;
+      }
+
+      .preface-scroll p {
+        font-size: 1.05em;
+        line-height: 1.9;
+        letter-spacing: 0.02em;
+        margin: 0;
+      }
+
+      /* 句讀 marks, styled after the vermilion (硃筆) punctuation a teacher or
+         commentator would add to an unpunctuated text: a filled dot for 句
+         (sentence end) and a hollow dot for 讀 (clause pause), sitting at the
+         character's corner rather than taking up a character-width of their
+         own. */
+      .preface-scroll .ju,
+      .preface-scroll .dou {
+        position: relative;
+      }
+
+      .preface-scroll .ju::after,
+      .preface-scroll .dou::after {
+        content: "";
+        position: absolute;
+        right: -0.1em;
+        bottom: 0.05em;
+        width: 0.3em;
+        height: 0.3em;
+        border-radius: 50%;
+      }
+
+      .preface-scroll .ju::after {
+        background: #b23a2f;
+      }
+
+      .preface-scroll .dou::after {
+        background: transparent;
+        border: 1px solid #b23a2f;
+      }
+    </style>
+  </head>
+
+  <body class="essay preface">
+    <div class="preface-scroll">
+      <h1>序</h1>
+      <p>天生烝<span class="dou">民</span>各有其<span class="ju">性</span>形有厚<span class="dou">薄</span>氣有彊<span class="dou">弱</span>材有長<span class="dou">短</span>力有多<span class="dou">寡</span>此天之所生<span class="ju">也</span>人之<span class="dou">情</span>欲貴而惡<span class="dou">賤</span>欲勝而惡<span class="ju">屈</span>力足者陵<span class="dou">人</span>力不足者事<span class="ju">人</span>上下相<span class="dou">安</span>久而莫知其<span class="dou">故</span>遂以為固<span class="ju">然</span>居下者<span class="dou">曰</span>我固然<span class="ju">也</span>居上者<span class="dou">曰</span>我固宜<span class="ju">然</span>豈天之性<span class="ju">哉</span>習之久<span class="ju">也</span>性<span class="dou">者</span>天之所生<span class="dou">也</span>為<span class="dou">者</span>人之所作<span class="ju">也</span>材性之<span class="dou">殊</span>天<span class="dou">也</span>貴賤之<span class="dou">名</span>上下之<span class="dou">位</span>法令之<span class="dou">制</span>人<span class="ju">也</span>世異則事<span class="dou">異</span>事異則法<span class="dou">異</span>法異則名<span class="ju">異</span>人作之而謂之<span class="dou">天</span>習之而謂之<span class="dou">性</span>是蔽<span class="ju">也</span>人之欲<span class="dou">勝</span>非必陵人<span class="ju">也</span>勝<span class="dou">事</span>勝<span class="dou">言</span>勝<span class="dou">難</span>皆勝<span class="ju">也</span>欲勝則求其<span class="dou">能</span>求其能則知其所不<span class="dou">能</span>知其所不<span class="dou">能</span>則知天之<span class="dou">大</span>而不自以為無所不<span class="ju">能</span>故欲不可<span class="dou">絕</span>亦不可<span class="ju">縱</span>因其欲而道<span class="dou">之</span>成其材而節<span class="dou">之</span>則各得其<span class="ju">宜</span>人居其位<span class="dou">久</span>則貴賤之名固於<span class="dou">心</span>習其事<span class="dou">久</span>則人之所為若天之所<span class="ju">生</span>故易君而俗不<span class="dou">易</span>變法而習不<span class="dou">變</span>改名而心不<span class="dou">改</span>上雖易而下未<span class="dou">易</span>迹雖更而實未更<span class="ju">也</span>故知天者不以人亂<span class="dou">天</span>知人者不以天蔽<span class="ju">人</span>天生<span class="dou">之</span>敬<span class="dou">之</span>人為<span class="dou">之</span>察<span class="dou">之</span>其可改<span class="dou">者</span>改<span class="ju">之</span>居下不自<span class="dou">卑</span>居上不自<span class="ju">矜</span>名察則實<span class="dou">明</span>勢尊不若德<span class="dou">尊</span>習雖<span class="dou">久</span>不可以為<span class="ju">性</span>各盡其<span class="dou">材</span>各安其<span class="dou">分</span>知所<span class="dou">能</span>知所不<span class="dou">能</span>知天之<span class="ju">大</span>天人不相<span class="dou">亂</span>上下有<span class="dou">序</span>而天下治<span class="ju">矣</span></p>
+    </div>
+  </body>
+</html>

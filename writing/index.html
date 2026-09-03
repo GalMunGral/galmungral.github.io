@@ -17,28 +17,28 @@
           <li><button type="button" data-index="1"><em>The Computationalist Manifesto</em><br /><span lang="zh">計算主義宣言</span></button></li>
           <li><button type="button" data-index="2"><em>Research Software as Rhetoric</em><br /><span lang="zh">作為修辭的研究型軟件</span></button></li>
           <li><button type="button" data-index="3"><em>RE: Research Software as Rhetoric</em><br /><span lang="zh">回覆：作為修辭的研究型軟件</span></button></li>
-          <li><button type="button" data-index="4"><em>Beneath the Interface</em><br /><span lang="zh">界面之下</span></button></li>
-          <li><button type="button" data-index="5"><em>A Survey of 2D Graphics</em><br /><span lang="zh">二維圖形概覽</span></button></li>
-          <li><button type="button" data-index="6"><em>Foundations</em><br /><span lang="zh">根基</span></button></li>
-          <li><button type="button" data-index="7"><em>Some Thoughts on AI Coding</em><br /><span lang="zh">關於 AI 編程的一些思考</span></button></li>
-          <li><button type="button" data-index="8"><em>On Software Engineering as a Career</em><br /><span lang="zh">論軟件工程作為職業</span></button></li>
-          <li><button type="button" data-index="9"><em>The Great Pathology</em><br /><span lang="zh">頑疾</span></button></li>
-          <li><button type="button" data-index="10"><em>On Legacy</em><br /><span lang="zh">論遺留代碼</span></button></li>
+          <li><button type="button" data-index="4"><em>Some Thoughts on AI Coding</em><br /><span lang="zh">關於 AI 編程的一些思考</span></button></li>
+          <li><button type="button" data-index="5"><em>On Software Engineering as a Career</em><br /><span lang="zh">論軟件工程作為職業</span></button></li>
+          <li><button type="button" data-index="6"><em>The Great Pathology</em><br /><span lang="zh">頑疾</span></button></li>
+          <li><button type="button" data-index="7"><em>On Legacy</em><br /><span lang="zh">論遺留代碼</span></button></li>
+          <li><button type="button" data-index="8"><em>Beneath the Interface</em><br /><span lang="zh">界面之下</span></button></li>
+          <li><button type="button" data-index="9"><em>A Survey of 2D Graphics</em><br /><span lang="zh">二維圖形概覽</span></button></li>
+          <li><button type="button" data-index="10"><em>Foundations</em><br /><span lang="zh">根基</span></button></li>
         </ul>
       </nav>
 
       <div class="essay-viewer">
-        <div class="essay-card" data-index="0"><iframe src="ideology.html" loading="lazy"></iframe></div>
+        <div class="essay-card essay-card-preface" data-index="0"><iframe src="preface.html" loading="lazy"></iframe></div>
         <div class="essay-card" data-index="1"><iframe src="manifesto.html" loading="lazy"></iframe></div>
         <div class="essay-card" data-index="2"><iframe src="critique.html" loading="lazy"></iframe></div>
         <div class="essay-card" data-index="3"><iframe src="two-letters.html" loading="lazy"></iframe></div>
-        <div class="essay-card" data-index="4"><iframe src="/gui-first-principles/" loading="lazy"></iframe></div>
-        <div class="essay-card" data-index="5"><iframe src="vector-graphics.html" loading="lazy"></iframe></div>
-        <div class="essay-card" data-index="6"><iframe src="anima-mechanismi.html" loading="lazy"></iframe></div>
-        <div class="essay-card" data-index="7"><iframe src="ai-coding.html" loading="lazy"></iframe></div>
-        <div class="essay-card" data-index="8"><iframe src="stamp-collecting.html" loading="lazy"></iframe></div>
-        <div class="essay-card" data-index="9"><iframe src="the-great-pathology.html" loading="lazy"></iframe></div>
-        <div class="essay-card" data-index="10"><iframe src="on-legacy.html" loading="lazy"></iframe></div>
+        <div class="essay-card" data-index="4"><iframe src="ai-coding.html" loading="lazy"></iframe></div>
+        <div class="essay-card" data-index="5"><iframe src="stamp-collecting.html" loading="lazy"></iframe></div>
+        <div class="essay-card" data-index="6"><iframe src="the-great-pathology.html" loading="lazy"></iframe></div>
+        <div class="essay-card" data-index="7"><iframe src="on-legacy.html" loading="lazy"></iframe></div>
+        <div class="essay-card" data-index="8"><iframe src="/gui-first-principles/" loading="lazy"></iframe></div>
+        <div class="essay-card" data-index="9"><iframe src="vector-graphics.html" loading="lazy"></iframe></div>
+        <div class="essay-card" data-index="10"><iframe src="anima-mechanismi.html" loading="lazy"></iframe></div>
       </div>
     </div>
 
@@ -59,39 +59,18 @@
         setActive(btn.dataset.index);
         viewer
           .querySelector(`.essay-card[data-index="${btn.dataset.index}"]`)
-          ?.scrollIntoView({ behavior: "smooth", block: "start" });
+          ?.scrollIntoView({ behavior: "smooth", inline: "center" });
       });
 
-      // Size each iframe to its own content so the essay scrolls as part of
-      // the page, not in its own nested scrollbar. All essays are
-      // same-origin, so this works without postMessage.
-      const resizeToContent = (frame) => {
-        try {
-          const doc = frame.contentDocument;
-          const height = Math.max(doc.documentElement.scrollHeight, doc.body?.scrollHeight ?? 0);
-          frame.style.height = `${height}px`;
-        } catch {
-          // cross-origin frame (shouldn't happen, but fail gracefully)
-        }
-      };
-
-      for (const frame of viewer.querySelectorAll("iframe")) {
-        frame.setAttribute("scrolling", "no");
-        frame.addEventListener("load", () => {
-          resizeToContent(frame);
-          setTimeout(() => resizeToContent(frame), 300); // fonts/images that finish late
-          setTimeout(() => resizeToContent(frame), 1200); // MathJax/KaTeX rendering that finishes later still
-        });
-      }
-
-      // Keep the active menu item in sync with whichever essay is in view.
+      // Keep the active menu item in sync with whichever essay is in view,
+      // as the reader scrolls horizontally through the essays.
       const observer = new IntersectionObserver(
         (entries) => {
           for (const entry of entries) {
             if (entry.isIntersecting) setActive(entry.target.dataset.index);
           }
         },
-        { rootMargin: "-45% 0px -50% 0px", threshold: 0 }
+        { root: viewer, threshold: 0.6 }
       );
       for (const card of cards) observer.observe(card);
     </script>
